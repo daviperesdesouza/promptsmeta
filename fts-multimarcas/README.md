@@ -137,7 +137,7 @@ Verificado sem erros de console, JSON-LD válido, 20 links de WhatsApp com a men
 | 1. Benefício em 5 s | 9 | O título abre pelo benefício, "14 marcas" vem como prova e o CTA fica visível sem rolar em 390×844. |
 | 2. Presença humana real | **5 → 9 com as fotos** | A estrutura está pronta, mas ainda não há nenhuma foto real do Fabricio. É a nota que trava a aprovação. |
 | 3. Assinatura 14 → 1 | 9 | Conduzida pela rolagem, com composição própria no celular e terminando no botão. Sem os nomes das marcas, perde força. |
-| 4. WhatsApp em ≤ 2 toques | **8 → 10 com o número** | 1 toque com mensagem pronta em 20 botões. Sem o número, o WhatsApp pede para escolher o contato. |
+| 4. WhatsApp em ≤ 2 toques | 10 | 1 toque, 20 botões, número real e mensagem pronta por intenção e categoria. |
 | 5. Ritmo e composição | 9 | Alterna papel, preto e verde, com cartões desnivelados, galeria alternada e grades assimétricas. Nenhum "título + 3 cards". |
 | 6. Mobile próprio | 9 | Hero empilhado, lista deslizável, feixe central na assinatura, menu circular, galeria em tela cheia e botão fixo inteligente. |
 | 7. Motion | 9 | Abertura em ~1,1 s, cada movimento com função e versão reduced-motion completa. |
@@ -145,29 +145,29 @@ Verificado sem erros de console, JSON-LD válido, 20 links de WhatsApp com a men
 | 9. Performance e acessibilidade | 9 | Sem bibliotecas, contraste AA medido, teclado, um h1 e conteúdo legível sem JS. |
 | 10. Veracidade | 10 | Nenhum número, depoimento, preço, parceiro ou serviço inventado. O não confirmado aparece marcado ou some na publicação. |
 
-**Não publicar ainda.** Os critérios 2 e 4 só chegam a 8+ com as fotos e o número, e isso não se resolve no código.
+**Não publicar ainda.** O critério 2 só chega a 8+ com as fotos reais do Fabricio.
 
 ## 11. Pendências (o que falta e o impacto)
 
+Já confirmados: WhatsApp (27) 99849-0805, e-mail, +20 anos de atuação, as 14 marcas, "vou até você", parceria com as marcas, entrega na concessionária (ele leva o cliente), usado entra na troca, Instagram @fabricioteixeiradesouza. Horário não é exibido (autônomo).
+
 | # | Falta | Impacto |
 |---|---|---|
-| 1 | **Número de WhatsApp com DDD** | **Bloqueia a publicação.** Sem ele, os botões abrem o WhatsApp pedindo para escolher um contato. |
-| 2 | **Foto principal do Fabricio** (meio corpo, luz natural, ao lado de um carro) | O hero fica sem rosto, e é a peça que mais gera confiança. |
-| 3 | Recorte quadrado do rosto | O fim da assinatura mostra "1" em vez do Fabricio. |
-| 4 | Foto em ação (com cliente ou entregando a chave) | "Quem é" fica sem prova visual. |
-| 5 | 10–15 fotos de entregas com autorização por escrito | Sem elas, a galeria não aparece na versão publicada. |
-| 6 | Vídeo de 6–12 s (opcional) | Nenhum. O hero usa a foto. |
-| 7 | Logo em SVG | Usa a marca em texto "FTS.". |
-| 8 | Nomes das 14 marcas | A assinatura e a lista aparecem sem nomes, e a FAQ de marcas fica incompleta. |
-| 9 | **Confirmar "+10 anos de atuação" e "clientes há +15 anos"** | Os dois números se contradizem. Até confirmar, ficam marcados e somem na publicação. |
-| 10 | Como o Fabricio consegue o carro e as condições | O passo 2 de "Como funciona" fica genérico. |
-| 11 | Confirmar serviços: avaliação do usado, frotas e financiamento | O que não for confirmado some (inclusive a seção Empresas e 2 dos 4 CTAs). |
-| 12 | E-mail | O rodapé fica sem e-mail. |
-| 13 | Dias e horários de atendimento | O visitante não sabe quando será respondido. |
-| 14 | 3–5 depoimentos reais com nome e autorização | A seção não aparece (por regra). |
-| 15 | 2–3 frases do Fabricio sobre a própria história | "Quem é" fica só com os fatos. |
-| 16 | Domínio | Canonical, Open Graph e schema usam `SEU-DOMINIO.com.br`. |
-| 17 | A Loja B do endereço do CNPJ recebe clientes? | Hoje o endereço aparece só como dado legal no rodapé e no schema. |
-| 18 | Handle do Instagram: `fts.multimarcas0km` ou `fabricioteixeira.carros`? | O site usa `fts.multimarcas0km` (basta trocar no CONFIG). |
+| 1 | **Foto principal do Fabricio** (meio corpo, luz natural, ao lado de um carro) | O hero fica sem rosto, e é a peça que mais gera confiança. |
+| 2 | Recorte quadrado do rosto | O fim da assinatura mostra "1" em vez do Fabricio. |
+| 3 | Foto em ação (com cliente ou entregando a chave) | "Quem é" fica sem prova visual. |
+| 4 | 10–15 fotos de entregas com autorização | Sem elas, a galeria não aparece na versão publicada. |
+| 5 | Vídeo de 6–12 s (opcional) | Nenhum. |
+| 6 | Logo em SVG/PNG | Usa a marca em texto "FTS.". |
+| 7 | Omoda e Jaecoo contam como uma marca? (o adesivo tem 15 logos) | Se forem 15, "14 marcas" muda no site todo. |
+| 8 | Há quantos anos o cliente mais antigo compra com ele? | Some da publicação até confirmar. |
+| 9 | "+1.200 carros entregues" está certo? | É o número em destaque. |
+| 10 | Vende para empresas e frotas? | Se não, some a seção Empresas e um CTA. |
+| 11 | Ajuda com financiamento? | Se não, a pergunta some. |
+| 12 | Seminovos: com que frequência? | Hoje o texto diz "alguns seminovos". |
+| 13 | 3–5 depoimentos reais com nome e autorização | A seção não aparece. |
+| 14 | 2–3 frases do Fabricio sobre a história dele | "Quem é" fica só com os fatos. |
+| 15 | Domínio | Canonical, Open Graph e schema usam `SEU-DOMINIO.com.br`. |
+| 16 | Link do Facebook | Hoje aparece só o nome, sem link. |
 
 Fatos usados do registro público: razão social, nome fantasia, CNPJ, abertura em 2018, endereço. O site não usa capital social, a data de entrada do sócio nem as atividades do CNPJ.
