@@ -207,6 +207,7 @@ button{font:inherit;color:inherit}
 
 /* ---------- Fotos e marcações de foto pendente ---------- */
 .foto{position:relative;overflow:hidden;background:var(--papel-2);border-radius:var(--raio);margin:0}
+.hero-foto img,.hero-foto video{object-position:50% 30%}
 .foto img,.foto video{width:100%;height:100%;object-fit:cover;filter:contrast(1.04) saturate(.9) sepia(.05)} /* tratamento de cor único */
 .foto::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(16,16,16,0) 55%,rgba(16,16,16,.28));mix-blend-mode:multiply}
 .foto.vazia{background:repeating-linear-gradient(135deg,var(--papel-2) 0 14px,#E4E2DA 14px 15px)}
@@ -380,11 +381,15 @@ button{font:inherit;color:inherit}
 .galeria{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gutter) 8px;margin-inline:calc(var(--gutter) * -1);scrollbar-width:none;overscroll-behavior-x:contain}
 .galeria::-webkit-scrollbar{display:none}
 .galeria li{scroll-snap-align:center;flex:0 0 82vw;max-width:420px}
-.galeria li:nth-child(3n+2){flex-basis:70vw;max-width:360px}
+.galeria li.largo{flex-basis:92vw;max-width:560px}
 .galeria button{all:unset;display:block;width:100%;cursor:zoom-in;border-radius:var(--raio)}
 .galeria button:focus-visible{outline:3px solid var(--g-300);outline-offset:4px}
 .galeria .foto{aspect-ratio:4/5}
-.galeria li:nth-child(3n+2) .foto{aspect-ratio:3/4;margin-top:40px}
+.galeria li.largo .foto{aspect-ratio:4/3}
+.galeria li:not(.largo) .foto{margin-top:0}
+.gal-leg{margin-top:12px;font-size:var(--fs-small);line-height:1.35;color:var(--cinza-noite)}
+.gal-leg b{display:block;color:var(--branco);font-weight:600}
+@media (min-width:900px){.galeria li:nth-child(4n+3) .foto{margin-top:48px}}
 .galeria figcaption{margin-top:12px;font-size:var(--fs-small);color:var(--cinza-noite)}
 .galeria-ctrl{display:flex;gap:10px;align-items:center;margin-top:24px}
 .galeria-ctrl button{width:48px;height:48px;border-radius:50%;border:1.5px solid var(--noite-linha);background:transparent;color:var(--branco);cursor:pointer;display:grid;place-items:center;transition:background .25s, border-color .25s}
@@ -405,6 +410,8 @@ button{font:inherit;color:inherit}
 .lb-trilho::-webkit-scrollbar{display:none}
 .lb-slide{flex:0 0 100%;height:100%;scroll-snap-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:72px 16px 96px;gap:14px}
 .lb-slide .foto{width:min(100%,calc((100dvh - 190px) * .8));aspect-ratio:4/5;border-radius:12px}
+.lb-slide.largo .foto{width:min(100%,calc((100dvh - 190px) * 1.333), 1100px);aspect-ratio:4/3}
+.lb-slide p b{color:var(--branco);font-weight:600}
 .lb-slide p{color:var(--cinza-noite);font-size:var(--fs-small);text-align:center}
 .lb-fechar{position:absolute;top:14px;right:14px;z-index:3;min-height:48px;padding:0 18px;border-radius:999px;border:1.5px solid #3a3a38;background:#161616;color:var(--branco);cursor:pointer;font-weight:600}
 .lb-fechar:hover{background:var(--verde);border-color:var(--verde)}
@@ -416,7 +423,7 @@ button{font:inherit;color:inherit}
 
 /* ---------- QUEM É ---------- */
 .quem .grid{row-gap:32px;align-items:center}
-.quem-foto{grid-column:1/-1;aspect-ratio:4/5;max-height:560px}
+.quem-foto{grid-column:1/-1;aspect-ratio:4/3}
 .quem-texto{grid-column:1/-1}
 .quem h2{font-size:var(--fs-h2)}
 .quem-corpo{margin-top:22px;display:grid;gap:16px;font-size:var(--fs-lead);line-height:1.5;max-width:40ch}
@@ -428,7 +435,7 @@ button{font:inherit;color:inherit}
 .quem-fatos dd{margin:6px 0 0;font-weight:600}
 .quem-acoes{margin-top:28px;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center}
 @media (min-width:900px){
-  .quem-foto{grid-column:1/6;aspect-ratio:3/4;max-height:none}
+  .quem-foto{grid-column:1/7;aspect-ratio:4/3;max-height:none;align-self:center}
   .quem-texto{grid-column:7/-1}
 }
 
@@ -443,6 +450,19 @@ button{font:inherit;color:inherit}
 .lista-marcas li:nth-child(odd){padding-right:12px}
 .lista-marcas li::before{content:counter(lm,decimal-leading-zero);font-size:.6875rem;color:var(--tinta-3);letter-spacing:.06em}
 .lista-marcas li.sem-nome{color:var(--tinta-3);font-weight:500}
+.lista-marcas.logos{grid-template-columns:repeat(2,1fr);gap:1px;background:var(--linha);border:1px solid var(--linha);border-radius:var(--raio-sm);overflow:hidden}
+.lista-marcas.logos li{background:var(--papel);border:0;padding:20px 16px;min-height:92px;justify-content:center;align-items:center;gap:14px}
+.lista-marcas.logos li::before{display:none}
+.lista-marcas.logos img{width:auto;height:auto;max-height:46px;max-width:min(112px,100%);object-fit:contain;opacity:.82;transition:opacity .3s}
+.lista-marcas.logos li:hover img{opacity:1}
+.lista-marcas.logos li img + img{max-width:44%}
+.lista-marcas.logos li:has(img + img) img{max-height:20px;max-width:46%}
+.lista-marcas.logos li.extra{display:none;font:700 .9375rem/1.25 var(--f-display);color:var(--tinta-2);text-align:center;background:var(--papel-2)}
+@media (min-width:600px){.lista-marcas.logos li.extra{display:flex}}
+@media (min-width:600px){.lista-marcas.logos{grid-template-columns:repeat(3,1fr)}}
+.marcas-nota{margin-top:14px;font-size:.8125rem;color:var(--tinta-2);max-width:46ch}
+.publicos{display:flex;flex-wrap:wrap;gap:8px}
+.publicos li{padding:8px 14px;border-radius:999px;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55);font-size:.9375rem;font-weight:500}
 .cidades{margin-top:24px}
 .cidades li{font:800 clamp(2.1rem,1.2rem + 3.8vw,4.75rem)/1.02 var(--f-display);letter-spacing:-.035em;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
 .cidades li:first-child{color:var(--verde)}
@@ -780,6 +800,7 @@ button{font:inherit;color:inherit}
       <p class="rotulo">Marcas</p>
       <h2 id="t-marcas">14 marcas numa conversa.</h2>
       <ol class="lista-marcas" data-lista-marcas></ol>
+      <p class="marcas-nota">Consultor independente, em parceria com as marcas. Os logos pertencem às respectivas montadoras.</p>
       <p style="margin-top:14px" data-pend-only data-pend-marcas><span class="pend">[PENDENTE: lista das 14 marcas]</span></p>
     </div>
     <div class="mr-regiao rv" style="--rd:.1s">
@@ -802,9 +823,10 @@ button{font:inherit;color:inherit}
 <section class="secao empresas" id="empresas" aria-labelledby="t-empresas" data-servico="frotas">
   <div class="wrap grid">
     <div style="grid-column:1/-1"><p class="rotulo rv">Empresas <span class="pend" data-pend-servico>[PENDENTE: confirmar se atende frotas]</span></p></div>
-    <h2 id="t-empresas" class="rv">Renovar a frota, com uma pessoa só.</h2>
+    <h2 id="t-empresas" class="rv">Empresa, frota ou CNPJ? Também resolvo.</h2>
     <div class="empresas-tx rv">
-      <p>Carros de marcas diferentes para a sua empresa, organizados por um único consultor.</p>
+      <p>Condições especiais para empresas, com carros de marcas diferentes organizados por um único consultor.</p>
+      <ul class="publicos" aria-label="Para quem eu vendo"><li>Pessoa física</li><li>Empresa</li><li>Produtor rural</li><li>Taxista</li><li>Autoescola</li><li>Locadora</li><li>PCD</li></ul>
       <a class="btn" data-wa="frota" data-cta href="https://wa.me/5527998490805?text=Ol%C3%A1%2C%20Fabricio!%20Vim%20pelo%20site%20e%20quero%20falar%20sobre%20a%20frota%20da%20minha%20empresa."><svg class="ic" aria-hidden="true"><use href="#i-wa"/></svg>Falar sobre minha frota</a>
     </div>
   </div>
@@ -819,9 +841,10 @@ button{font:inherit;color:inherit}
       <details><summary>Quais marcas você atende?<i aria-hidden="true"></i></summary><p class="resp" data-faq-marcas>Atendo 14 marcas: Chevrolet, Toyota, Jeep, Ford, Renault, Honda, Hyundai, Volkswagen, RAM, Peugeot, Citroën, GWM, Omoda | Jaecoo e Fiat.</p></details>
       <details><summary>Preciso ir até você?<i aria-hidden="true"></i></summary><p class="resp">Não. Eu vou até você. E no dia da entrega, te busco e te levo até a concessionária da marca.</p></details>
       <details><summary>Quais cidades você atende?<i aria-hidden="true"></i></summary><p class="resp">Aracruz, Piúma, Fundão, João Neiva, Ibiraçu, Vitória e entorno, no Espírito Santo.</p></details>
+      <details><summary>Atende PCD, taxista e produtor rural?<i aria-hidden="true"></i></summary><p class="resp">Sim. Atendo pessoa física, empresa, produtor rural, taxista, autoescola, locadora e PCD.</p></details>
       <details><summary>A FTS é uma empresa registrada?<i aria-hidden="true"></i></summary><p class="resp">Sim. FTS Multimarcas e Serviços Ltda, CNPJ 29.464.051/0001-56, ativa desde 2018, em Aracruz-ES.</p></details>
       <details data-servico="avaliacaoUsado"><summary>Você pega meu usado na troca?<i aria-hidden="true"></i></summary><p class="resp" data-resp-usado>Sim, o seu usado pode entrar na negociação. Se eu mesmo não ficar com ele, encontro quem compre.</p></details>
-      <details data-servico="financiamento"><summary>Dá para financiar?<i aria-hidden="true"></i></summary><p class="resp" data-resp-fin><span class="pend">[PENDENTE: confirmar se ajuda com financiamento e como]</span></p></details>
+      <details data-servico="financiamento"><summary>Dá para financiar?<i aria-hidden="true"></i></summary><p class="resp" data-resp-fin>Sim. Busco taxas competitivas e acompanho a aprovação do financiamento com você.</p></details>
       <details><summary>Como eu começo?<i aria-hidden="true"></i></summary><p class="resp">Toque em qualquer botão verde. O WhatsApp abre com uma mensagem pronta dizendo o que você procura — é só enviar. <span data-atendimento-faq></span></p></details>
     </div>
   </div>
@@ -935,27 +958,50 @@ const CONFIG = {
   ],
 
   // As 14 marcas, na ordem em que devem aparecer. Ex.: ['Marca A', 'Marca B', ...]
+  // Logos (opcional): mesmos nomes da lista acima. Vários arquivos = logos lado a lado.
+  logos: {
+    'Chevrolet': ['assets/marcas/chevrolet.webp'], 'Toyota': ['assets/marcas/toyota.webp'], 'Jeep': ['assets/marcas/jeep.webp'],
+    'Ford': ['assets/marcas/ford.webp'], 'Renault': ['assets/marcas/renault.webp'], 'Honda': ['assets/marcas/honda.webp'],
+    'Hyundai': ['assets/marcas/hyundai.webp'], 'Volkswagen': ['assets/marcas/volkswagen.webp'], 'RAM': ['assets/marcas/ram.webp'],
+    'Peugeot': ['assets/marcas/peugeot.webp'], 'Citroën': ['assets/marcas/citroen.webp'], 'GWM': ['assets/marcas/gwm.webp'],
+    'Omoda | Jaecoo': ['assets/marcas/omoda.webp', 'assets/marcas/jaecoo.webp'], 'Fiat': ['assets/marcas/fiat.webp'],
+  },
   marcas: ['Chevrolet', 'Toyota', 'Jeep', 'Ford', 'Renault', 'Honda', 'Hyundai', 'Volkswagen', 'RAM', 'Peugeot', 'Citroën', 'GWM', 'Omoda | Jaecoo', 'Fiat'],
 
   // Serviços: true = confirmado, false = não oferece (some do site), null = ainda não confirmado.
   servicos: {
     avaliacaoUsado: true, // "Quero avaliar meu usado"
-    frotas: null,         // seção Empresas, categoria Empresas e "Falar sobre minha frota"
-    financiamento: null,  // pergunta sobre financiamento
+    frotas: true,         // seção Empresas, categoria Empresas e "Falar sobre minha frota"
+    financiamento: true,  // pergunta sobre financiamento
   },
   // Respostas reais para as perguntas (só preencha com o que o Fabricio confirmar).
-  respostas: { avaliacaoUsado: 'Sim, o seu usado pode entrar na negociação. Se eu mesmo não ficar com ele, encontro quem compre.', financiamento: '' },
+  respostas: { avaliacaoUsado: 'Sim, o seu usado pode entrar na negociação. Se eu mesmo não ficar com ele, encontro quem compre.', financiamento: 'Sim. Busco taxas competitivas e acompanho a aprovação do financiamento com você.' },
   comoFunciona: 'Trabalho em parceria com as marcas. Comparo modelos e condições para o seu caso, sem você rodar concessionária.',  // texto curto confirmado sobre como ele consegue o carro e as condições
   bio: '',           // 2–3 frases do Fabricio, com as palavras dele
 
   // Fotos reais (WebP). Rode tools/tratar-fotos.mjs para gerar os recortes com o tratamento de cor.
   fotos: {
-    hero:    { desktop: '', mobile: '', alt: 'Fabricio Teixeira ao lado de um carro 0 km', largura: 1200, altura: 1500 },
-    retrato: { src: '', alt: '' }, // recorte quadrado do rosto, usado no círculo da assinatura
-    acao:    { desktop: '', mobile: '', alt: 'Fabricio Teixeira entregando a chave a um cliente', largura: 1200, altura: 1600 },
+    hero:    { desktop: 'assets/fotos/hero-desktop.webp', mobile: 'assets/fotos/hero-mobile.webp', alt: 'Fabricio Teixeira sorrindo ao lado de uma Saveiro 0 km com laço vermelho, no dia da entrega', largura: 1000, altura: 1300 },
+    retrato: { src: 'assets/fotos/retrato.webp', alt: '' }, // recorte quadrado do rosto, usado no círculo da assinatura
+    acao:    { desktop: 'assets/fotos/acao.webp', mobile: '', alt: 'Fabricio Teixeira com o casal Joacir e esposa na entrega da Strada, com o carro coberto por um laço vermelho', largura: 1200, altura: 900 },
     video:   { mp4: '', poster: '' }, // opcional: 6–12 s de uma entrega, sem som
-    // 10–15 entregas autorizadas: { src: 'assets/fotos/entrega-01.webp', alt: '...', legenda: 'Família X, Aracruz' }
-    entregas: [],
+    // Entregas autorizadas. formato 'v' = vertical (4:5), 'h' = horizontal (4:3).
+    // { src: 'assets/fotos/entrega-01.webp', formato: 'v', alt: 'descrição da foto', legenda: 'Nome · Cidade', carro: 'Modelo' }
+    entregas: [
+      { src: 'assets/fotos/entrega-01.webp', formato: 'v', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Kelly de braços abertos ao lado do T-Cross branco com laço azul, na concessionária' },
+      { src: 'assets/fotos/entrega-02.webp', formato: 'h', legenda: 'Jair · Aracruz', carro: 'VW Saveiro Extreme', alt: 'Fabricio Teixeira e o cliente Jair ao lado da Saveiro' },
+      { src: 'assets/fotos/entrega-03.webp', formato: 'v', legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Zélia e uma acompanhante ao lado do Yaris Cross branco com laço vermelho' },
+      { src: 'assets/fotos/entrega-04.webp', formato: 'h', legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Fabricio Teixeira e o cliente Sérgio sorrindo diante do carro coberto com laço' },
+      { src: 'assets/fotos/entrega-05.webp', formato: 'v', legenda: 'José Manoel · Muniz Freire', carro: 'Chevrolet S10 LTZ', alt: 'Família do José Manoel ao lado da S10 com laço vermelho' },
+      { src: 'assets/fotos/entrega-06.webp', formato: 'h', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Fabricio Teixeira e a cliente Kelly diante do T-Cross coberto com capa azul' },
+      { src: 'assets/fotos/entrega-07.webp', formato: 'v', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Josenilton e o filho ao lado do Polo branco com laço vermelho' },
+      { src: 'assets/fotos/entrega-08.webp', formato: 'h', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fabricio Teixeira e o cliente Fernando dentro da Toro nova' },
+      { src: 'assets/fotos/entrega-09.webp', formato: 'v', legenda: 'Joacir · Aracruz', carro: 'Fiat Strada Freedom', alt: 'Joacir e a esposa ao lado da Strada coberta por capa vermelha com laço' },
+      { src: 'assets/fotos/entrega-10.webp', formato: 'h', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Fabricio Teixeira com Josenilton e o filho diante do Polo' },
+      { src: 'assets/fotos/entrega-11.webp', formato: 'v', legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Omoda 5 branco na concessionária, pronto para a entrega' },
+      { src: 'assets/fotos/entrega-12.webp', formato: 'h', legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Fabricio Teixeira com Zélia e uma acompanhante ao lado do Yaris Cross' },
+      { src: 'assets/fotos/entrega-13.webp', formato: 'v', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fiat Toro branca com laço vermelho na concessionária' },
+    ],
   },
 
   // Depoimentos reais e autorizados. Vazio = a seção NÃO aparece.
@@ -980,6 +1026,7 @@ const CONFIG = {
   if (!CONFIG.fotos.hero.desktop) addPend('Foto principal do Fabricio (meio corpo, luz natural, ao lado de um carro)', 'O topo fica sem rosto; é a peça que mais gera confiança.');
   if (!CONFIG.fotos.retrato.src) addPend('Recorte do rosto do Fabricio (quadrado)', 'O ponto final da assinatura “14 → 1” mostra o número 1 em vez do rosto.');
   if (!CONFIG.fotos.acao.desktop) addPend('Foto do Fabricio em ação (com cliente ou entregando chave)', 'A seção “Quem é” fica sem prova visual.');
+  if (CONFIG.fotos.entregas.length) addPend('Confirmar a autorização dos 8 clientes da galeria para aparecer no site', 'Cliente sem autorização deve sair da lista CONFIG.fotos.entregas.');
   if (CONFIG.fotos.entregas.length < 10) addPend('10–15 fotos de entregas reais, com autorização por escrito', 'A galeria de entregas mostra espaços reservados.');
   if (!CONFIG.fotos.video.mp4) addPend('Vídeo curto de uma entrega (opcional)', 'Sem impacto: o topo usa a foto.');
   if (!CONFIG.logo) addPend('Logo em /assets/logo.svg', 'O site usa a marca em texto “FTS.”.');
@@ -992,6 +1039,7 @@ const CONFIG = {
   if (!CONFIG.depoimentos.length) addPend('3–5 depoimentos reais com nome e autorização', 'A seção de depoimentos não aparece.');
   if (!CONFIG.bio) addPend('2–3 frases do Fabricio sobre a própria história', '“Quem é” fica só com os fatos.');
   addPend('Domínio do site (trocar SEU-DOMINIO.com.br no topo do index.html)', 'Compartilhamento e Google usam endereço provisório.');
+  addPend('Confirmar: a arte de divulgação cita Nissan, que não está no adesivo. Ele vende Nissan?', 'Se sim, a lista e o número de marcas mudam.');
   addPend('Confirmar: Omoda e Jaecoo contam como uma marca só? (o adesivo mostra 15 logos)', 'Se forem 15, o número “14 marcas” muda no site todo.');
   $$('[data-n-pend]').forEach(e => e.textContent = pend.length + ' itens');
   const lista = $('[data-pend-lista]');
@@ -1056,7 +1104,13 @@ const CONFIG = {
   /* ---------- Marcas ---------- */
   const marcas = Array.from({ length: 14 }, (_, i) => CONFIG.marcas[i] || '');
   $$('[data-cv-marcas] .cv-marca').forEach((li, i) => { li.querySelector('span').textContent = marcas[i] || 'Marca'; li.classList.toggle('sem-nome', !marcas[i]); });
-  $('[data-lista-marcas]').innerHTML = marcas.map(m => `<li class="${m ? '' : 'sem-nome'}">${m || 'Marca'}</li>`).join('');
+  const logos = CONFIG.logos || {};
+  $('[data-lista-marcas]').innerHTML = marcas.map(m => {
+    const l = m && logos[m];
+    if (l && l.length) return `<li class="com-logo" title="${m}">${l.map(src => `<img src="${src}" alt="${l.length > 1 ? '' : m}" width="160" height="80" loading="lazy" decoding="async">`).join('')}${l.length > 1 ? `<span class="sr">${m}</span>` : ''}</li>`;
+    return `<li class="${m ? '' : 'sem-nome'}">${m || 'Marca'}</li>`;
+  }).join('');
+  if (Object.keys(logos).length) { const ol = $('[data-lista-marcas]'); ol.classList.add('logos'); ol.insertAdjacentHTML('beforeend', '<li class="extra" aria-hidden="true">+ alguns<br>seminovos</li>'); }
   if (CONFIG.marcas.length === 14) {
     $$('[data-pend-marcas]').forEach(e => e.remove());
     $('[data-faq-marcas]').textContent = 'Atendo 14 marcas: ' + CONFIG.marcas.join(', ') + '.';
@@ -1076,10 +1130,12 @@ const CONFIG = {
   const gal = $('[data-galeria]');
   if (!entregas.length) $('#entregas').remove();
   else {
-    gal.innerHTML = entregas.map((e, i) => `<li class="rv" style="--rd:${Math.min(i, 4) * .08}s"><button type="button" data-abre="${i}" aria-label="Ver entrega ${i + 1} de ${entregas.length} em tela cheia"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')} — cliente + carro + Fabricio, com autorização]</span></div>` : `<img src="${e.src}" alt="${e.alt}" width="960" height="1200" loading="lazy" decoding="async">`}</figure></button>${e.legenda ? `<p class="sr">${e.legenda}</p>` : ''}</li>`).join('');
+    const dim = e => e.formato === 'h' ? 'width="1200" height="900"' : 'width="960" height="1200"';
+    const leg = e => e.legenda ? `<p class="gal-leg"><b>${e.legenda}</b>${e.carro ? `<span>${e.carro}</span>` : ''}</p>` : '';
+    gal.innerHTML = entregas.map((e, i) => `<li class="rv${e.formato === 'h' ? ' largo' : ''}" style="--rd:${Math.min(i, 4) * .08}s"><button type="button" data-abre="${i}" aria-label="Ver em tela cheia: ${e.legenda || 'entrega ' + (i + 1)}${e.carro ? ', ' + e.carro : ''}"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')} — cliente + carro + Fabricio, com autorização]</span></div>` : `<img src="${e.src}" alt="${e.alt}" ${dim(e)} loading="lazy" decoding="async">`}</figure></button>${leg(e)}</li>`).join('');
     // Lightbox
     const lb = $('#lightbox'), trilho = $('[data-lb-trilho]'), cont = $('[data-lb-contador]');
-    trilho.innerHTML = entregas.map((e, i) => `<div class="lb-slide" role="group" aria-roledescription="foto" aria-label="${i + 1} de ${entregas.length}"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')}]</span></div>` : `<img src="${e.src}" alt="${e.alt}" loading="lazy">`}</figure>${e.legenda ? `<p>${e.legenda}</p>` : ''}</div>`).join('');
+    trilho.innerHTML = entregas.map((e, i) => `<div class="lb-slide${e.formato === 'h' ? ' largo' : ''}" role="group" aria-roledescription="foto" aria-label="${i + 1} de ${entregas.length}"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')}]</span></div>` : `<img src="${e.src}" alt="${e.alt}" loading="lazy">`}</figure>${e.legenda ? `<p><b>${e.legenda}</b>${e.carro ? ' · ' + e.carro : ''}</p>` : ''}</div>`).join('');
     const atual = () => Math.round(trilho.scrollLeft / trilho.clientWidth);
     const vai = i => trilho.scrollTo({ left: Math.max(0, Math.min(entregas.length - 1, i)) * trilho.clientWidth, behavior: reduz ? 'auto' : 'smooth' });
     const conta = () => cont.textContent = `${atual() + 1} / ${entregas.length}`;

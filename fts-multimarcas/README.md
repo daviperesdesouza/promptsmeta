@@ -135,7 +135,7 @@ Verificado sem erros de console, JSON-LD válido, 20 links de WhatsApp com a men
 | Critério | Nota | Justificativa |
 |---|---|---|
 | 1. Benefício em 5 s | 9 | O título abre pelo benefício, "14 marcas" vem como prova e o CTA fica visível sem rolar em 390×844. |
-| 2. Presença humana real | **5 → 9 com as fotos** | A estrutura está pronta, mas ainda não há nenhuma foto real do Fabricio. É a nota que trava a aprovação. |
+| 2. Presença humana real | 9 | O Fabricio aparece no topo, no fim da assinatura 14 → 1, em "Quem é" e em 7 das 13 fotos de entregas reais.
 | 3. Assinatura 14 → 1 | 9 | Conduzida pela rolagem, com composição própria no celular e terminando no botão. Sem os nomes das marcas, perde força. |
 | 4. WhatsApp em ≤ 2 toques | 10 | 1 toque, 20 botões, número real e mensagem pronta por intenção e categoria. |
 | 5. Ritmo e composição | 9 | Alterna papel, preto e verde, com cartões desnivelados, galeria alternada e grades assimétricas. Nenhum "título + 3 cards". |
@@ -145,29 +145,22 @@ Verificado sem erros de console, JSON-LD válido, 20 links de WhatsApp com a men
 | 9. Performance e acessibilidade | 9 | Sem bibliotecas, contraste AA medido, teclado, um h1 e conteúdo legível sem JS. |
 | 10. Veracidade | 10 | Nenhum número, depoimento, preço, parceiro ou serviço inventado. O não confirmado aparece marcado ou some na publicação. |
 
-**Não publicar ainda.** O critério 2 só chega a 8+ com as fotos reais do Fabricio.
+**Pronto para publicar** depois de confirmar a autorização dos clientes e trocar `modoRevisao` para `false`.
 
 ## 11. Pendências (o que falta e o impacto)
 
-Já confirmados: WhatsApp (27) 99849-0805, e-mail, +20 anos de atuação, as 14 marcas, "vou até você", parceria com as marcas, entrega na concessionária (ele leva o cliente), usado entra na troca, Instagram @fabricioteixeiradesouza. Horário não é exibido (autônomo).
+Já no site: WhatsApp (27) 99849-0805, e-mail, Instagram @fabricioteixeiradesouza, +20 anos, as 14 marcas com logos (cinza, com aviso de consultor independente), "vou até você", parceria com as marcas, entrega na concessionária, usado na troca, financiamento, empresas/frotas e públicos (pessoa física, empresa, produtor rural, taxista, autoescola, locadora e PCD, tirados das artes de divulgação dele). Fotos reais: topo, retrato da assinatura, "Quem é" e 13 fotos de 8 entregas (Kelly, Jair, Zélia, Sérgio, José Manoel, Josenilton, Fernando e Joacir).
 
 | # | Falta | Impacto |
 |---|---|---|
-| 1 | **Foto principal do Fabricio** (meio corpo, luz natural, ao lado de um carro) | O hero fica sem rosto, e é a peça que mais gera confiança. |
-| 2 | Recorte quadrado do rosto | O fim da assinatura mostra "1" em vez do Fabricio. |
-| 3 | Foto em ação (com cliente ou entregando a chave) | "Quem é" fica sem prova visual. |
-| 4 | 10–15 fotos de entregas com autorização | Sem elas, a galeria não aparece na versão publicada. |
-| 5 | Vídeo de 6–12 s (opcional) | Nenhum. |
-| 6 | Logo em SVG/PNG | Usa a marca em texto "FTS.". |
-| 7 | Omoda e Jaecoo contam como uma marca? (o adesivo tem 15 logos) | Se forem 15, "14 marcas" muda no site todo. |
-| 8 | Há quantos anos o cliente mais antigo compra com ele? | Some da publicação até confirmar. |
-| 9 | "+1.200 carros entregues" está certo? | É o número em destaque. |
-| 10 | Vende para empresas e frotas? | Se não, some a seção Empresas e um CTA. |
-| 11 | Ajuda com financiamento? | Se não, a pergunta some. |
-| 12 | Seminovos: com que frequência? | Hoje o texto diz "alguns seminovos". |
-| 13 | 3–5 depoimentos reais com nome e autorização | A seção não aparece. |
-| 14 | 2–3 frases do Fabricio sobre a história dele | "Quem é" fica só com os fatos. |
-| 15 | Domínio | Canonical, Open Graph e schema usam `SEU-DOMINIO.com.br`. |
-| 16 | Link do Facebook | Hoje aparece só o nome, sem link. |
+| 1 | Confirmar a autorização dos 8 clientes da galeria | Quem não autorizar sai de `CONFIG.fotos.entregas`. |
+| 2 | Omoda e Jaecoo contam como uma marca? (o adesivo tem 15 logos) | Se forem 15, "14 marcas" muda no site todo. |
+| 3 | A arte de divulgação cita Nissan, que não está no adesivo | Se ele vende Nissan, a lista e o número mudam. |
+| 4 | Há quantos anos o cliente mais antigo compra com ele? | Some da publicação até confirmar. |
+| 5 | 3–5 depoimentos com nome e autorização | A seção não aparece. |
+| 6 | 2–3 frases do Fabricio sobre a história dele | "Quem é" fica só com os fatos. |
+| 7 | Logo da FTS em arquivo | Usa a marca em texto "FTS.". |
+| 8 | Domínio | Canonical, Open Graph e schema usam `SEU-DOMINIO.com.br`. |
+| 9 | Vídeo (opcional) | Há 4 vídeos de entrega no material, ainda não usados (o maior tem 15 MB e pesaria o site). |
 
 Fatos usados do registro público: razão social, nome fantasia, CNPJ, abertura em 2018, endereço. O site não usa capital social, a data de entrada do sócio nem as atividades do CNPJ.
