@@ -149,7 +149,7 @@ Verificado sem erros de console, JSON-LD válido, 20 links de WhatsApp com a men
 
 ## 11. Pendências (o que falta e o impacto)
 
-Já no site: WhatsApp (27) 99849-0805, e-mail, Instagram @fabricioteixeiradesouza, +20 anos, as 14 marcas com logos (cinza, com aviso de consultor independente), "vou até você", parceria com as marcas, entrega na concessionária, usado na troca, financiamento, empresas/frotas e públicos (pessoa física, empresa, produtor rural, taxista, autoescola, locadora e PCD, tirados das artes de divulgação dele). Fotos reais: topo, retrato da assinatura, "Quem é" e 13 fotos de 8 entregas (Kelly, Jair, Zélia, Sérgio, José Manoel, Josenilton, Fernando e Joacir).
+Já no site: WhatsApp (27) 99849-0805, e-mail, Instagram @fabricioteixeiradesouza, +20 anos, as 14 marcas com logos (cinza, com aviso de consultor independente), "vou até você", parceria com as marcas, entrega na concessionária, usado na troca, financiamento, empresas/frotas e públicos (pessoa física, empresa, produtor rural, taxista, autoescola, locadora e PCD, tirados das artes de divulgação dele). Logos nas cores oficiais. Galeria com filtro por tipo (SUV, Picape, Hatch, Híbrido) e 4 vídeos de entrega (MP4 + WebM, carregam só no play). Fotos reais: topo, retrato da assinatura, "Quem é" e 13 fotos de 8 entregas (Kelly, Jair, Zélia, Sérgio, José Manoel, Josenilton, Fernando e Joacir).
 
 | # | Falta | Impacto |
 |---|---|---|
@@ -161,6 +161,6 @@ Já no site: WhatsApp (27) 99849-0805, e-mail, Instagram @fabricioteixeiradesouz
 | 6 | 2–3 frases do Fabricio sobre a história dele | "Quem é" fica só com os fatos. |
 | 7 | Logo da FTS em arquivo | Usa a marca em texto "FTS.". |
 | 8 | Domínio | Canonical, Open Graph e schema usam `SEU-DOMINIO.com.br`. |
-| 9 | Vídeo (opcional) | Há 4 vídeos de entrega no material, ainda não usados (o maior tem 15 MB e pesaria o site). |
+| 9 | Conferir o áudio dos 4 vídeos e a autorização de quem aparece | Os vídeos estão na seção "Na hora da entrega"; o áudio não foi revisado (só a imagem). |
 
 Fatos usados do registro público: razão social, nome fantasia, CNPJ, abertura em 2018, endereço. O site não usa capital social, a data de entrada do sócio nem as atividades do CNPJ.

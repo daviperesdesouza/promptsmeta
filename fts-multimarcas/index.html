@@ -394,6 +394,17 @@ button{font:inherit;color:inherit}
 .gal-leg b{display:block;color:var(--branco);font-weight:600}
 @media (min-width:900px){.galeria li:nth-child(4n+3) .foto{margin-top:48px}}
 .galeria figcaption{margin-top:12px;font-size:var(--fs-small);color:var(--cinza-noite)}
+.filtros{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--gutter) * -1) 22px;padding:2px var(--gutter)}
+.filtros::-webkit-scrollbar{display:none}
+.filtro{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:0;background:transparent;color:var(--branco);box-shadow:inset 0 0 0 1.5px var(--noite-linha);font:600 .9375rem/1 var(--f-texto);cursor:pointer;transition:background .25s, box-shadow .25s}
+.filtro small{font-size:.75rem;font-weight:600;color:var(--cinza-noite);background:var(--noite-2);border-radius:999px;padding:3px 7px;transition:inherit}
+.filtro:hover{box-shadow:inset 0 0 0 1.5px var(--cinza-noite)}
+.filtro[aria-pressed="true"]{background:var(--verde);box-shadow:none}
+.filtro[aria-pressed="true"] small{background:rgba(255,255,255,.18);color:var(--branco)}
+.filtro:focus-visible{outline:3px solid var(--g-300);outline-offset:3px}
+.galeria li[hidden]{display:none}
+.gal-tags{display:flex!important;gap:6px;margin-top:8px}
+.gal-tags em{font-style:normal;font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--g-300);border:1px solid rgba(124,203,152,.35);border-radius:999px;padding:3px 8px}
 .carrossel{position:relative}
 .galeria{scroll-padding-inline:var(--gutter);cursor:grab}
 .galeria.arrastando{cursor:grabbing;scroll-snap-type:none;user-select:none}
@@ -409,7 +420,8 @@ button{font:inherit;color:inherit}
 .car-cont{font-variant-numeric:tabular-nums;color:var(--branco);font-weight:600;font-size:var(--fs-small);min-width:52px}
 .car-barra{flex:1;max-width:260px;height:2px;background:var(--noite-linha);border-radius:2px;overflow:hidden;position:relative}
 .car-barra i{position:absolute;inset:0;background:var(--g-400);transform-origin:left;transform:scaleX(var(--p,.08));transition:transform .5s var(--e-out)}
-.galeria-ctrl .car-play{width:auto;height:44px;border-radius:999px;padding:0 16px 0 14px;display:inline-flex;gap:10px;align-items:center;font-weight:600;font-size:.875rem}
+.galeria-ctrl .car-play{width:auto;height:44px;border-radius:999px;padding:0 16px 0 14px;border:1.5px solid var(--noite-linha);background:transparent;color:var(--branco);cursor:pointer;transition:background .25s, border-color .25s;display:inline-flex;gap:10px;align-items:center;font-weight:600;font-size:.875rem}
+.galeria-ctrl .car-play:hover{background:var(--verde);border-color:var(--verde)}
 .car-play-ic{width:10px;height:12px;border-left:3px solid currentColor;border-right:3px solid currentColor}
 .car-play[aria-pressed="false"] .car-play-ic{border:0;width:0;height:0;border-left:10px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
 .galeria-ctrl-old{display:none}
@@ -417,6 +429,33 @@ button{font:inherit;color:inherit}
 .galeria-ctrl button:hover{background:var(--verde);border-color:var(--verde)}
 .galeria-ctrl svg{width:18px;height:18px}
 .galeria-ctrl span{margin-left:8px;color:var(--cinza-noite);font-size:var(--fs-small)}
+.videos{margin-top:clamp(64px,8vw,112px);padding-top:clamp(40px,5vw,64px);border-top:1px solid var(--noite-linha)}
+.videos-tit{font-size:clamp(1.75rem,1.2rem + 2vw,2.75rem);margin-top:12px;margin-bottom:clamp(24px,3vw,36px)}
+.videos-grid{display:grid;gap:28px}
+.v-lista{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding:0 var(--gutter) 6px;scroll-padding-inline:var(--gutter)}
+.v-lista::-webkit-scrollbar{display:none}
+.vcard{margin:0}
+.v-lista .vcard{flex:0 0 58vw;max-width:260px;scroll-snap-align:start}
+.vcard-midia{position:relative;aspect-ratio:9/16;border-radius:var(--raio);overflow:hidden;background:#000}
+.vcard--h .vcard-midia{aspect-ratio:16/9}
+.vcard-midia video,.vcard-play img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.vcard-midia video{object-fit:contain;background:#000}
+.vcard-play{all:unset;position:absolute;inset:0;cursor:pointer;display:block}
+.vcard-play::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(0,0,0,.55))}
+.vcard-play:focus-visible{outline:3px solid var(--g-300);outline-offset:-3px}
+.vcard-ic{position:absolute;z-index:2;left:50%;top:50%;width:68px;height:68px;margin:-34px 0 0 -34px;border-radius:50%;background:var(--verde);display:grid;place-items:center;box-shadow:0 10px 30px -8px rgba(0,0,0,.6);transition:transform .35s var(--e-mola)}
+.vcard-ic svg{width:26px;height:26px;margin-left:3px;color:#fff}
+.vcard-play:hover .vcard-ic{transform:scale(1.08)}
+.reduz .vcard-play:hover .vcard-ic{transform:none}
+.vcard-dur{position:absolute;z-index:2;right:12px;bottom:12px;font:600 .75rem/1 var(--f-texto);color:#fff;background:rgba(0,0,0,.55);padding:5px 8px;border-radius:6px}
+.vcard figcaption{margin-top:12px;font-size:var(--fs-small);line-height:1.35;color:var(--cinza-noite)}
+.vcard figcaption b{display:block;color:var(--branco);font-weight:600}
+@media (min-width:900px){
+  .videos-grid{grid-template-columns:2.2fr 3fr;gap:12px;align-items:start}
+  .v-lista{display:grid;grid-template-columns:repeat(3,1fr);overflow:visible;margin:0;padding:0}
+  .v-lista .vcard{max-width:none}
+  .vcard-midia,.vcard--h .vcard-midia{aspect-ratio:auto;height:clamp(340px,30vw,440px)}
+}
 .depos{margin-top:clamp(56px,7vw,96px);display:grid;gap:var(--gap)}
 @media (min-width:900px){.depos{grid-template-columns:repeat(12,1fr)}.depo{grid-column:span 6}.depo:nth-child(3n){grid-column:3/11}}
 .depo{border-top:1px solid var(--noite-linha);padding-top:22px}
@@ -472,13 +511,14 @@ button{font:inherit;color:inherit}
 .lista-marcas li::before{content:counter(lm,decimal-leading-zero);font-size:.6875rem;color:var(--tinta-3);letter-spacing:.06em}
 .lista-marcas li.sem-nome{color:var(--tinta-3);font-weight:500}
 .lista-marcas.logos{grid-template-columns:repeat(2,1fr);gap:1px;background:var(--linha);border:1px solid var(--linha);border-radius:var(--raio-sm);overflow:hidden}
-.lista-marcas.logos li{background:#F5F4EF;border:0;padding:20px 16px;min-height:92px;justify-content:center;align-items:center;gap:14px}
+.lista-marcas.logos li{background:#FFFFFF;transition:transform .35s var(--e-out), box-shadow .35s var(--e-out);position:relative;border:0;padding:20px 16px;min-height:92px;justify-content:center;align-items:center;gap:14px}
 .lista-marcas.logos li::before{display:none}
-.lista-marcas.logos img{width:auto;height:auto;max-height:46px;max-width:min(112px,100%);object-fit:contain;opacity:.82;transition:opacity .3s}
-.lista-marcas.logos li:hover img{opacity:1}
+.lista-marcas.logos img{width:auto;height:auto;max-height:50px;max-width:min(118px,100%);object-fit:contain}
+.lista-marcas.logos li:not(.extra):hover{transform:translateY(-3px);box-shadow:0 14px 28px -16px rgba(16,16,16,.35);z-index:1}
+.reduz .lista-marcas.logos li:hover{transform:none}
 .lista-marcas.logos li img + img{max-width:44%}
 .lista-marcas.logos li:has(img + img) img{max-height:20px;max-width:46%}
-.lista-marcas.logos li.extra{display:none;font:700 .9375rem/1.25 var(--f-display);color:var(--tinta-2);text-align:center;background:var(--papel-2)}
+.lista-marcas.logos li.extra{display:none;font:700 .9375rem/1.25 var(--f-display);color:var(--branco);text-align:center;background:var(--verde)}
 @media (min-width:600px){.lista-marcas.logos li.extra{display:flex}}
 @media (min-width:600px){.lista-marcas.logos{grid-template-columns:repeat(3,1fr)}}
 .marcas-nota{margin-top:14px;font-size:.8125rem;color:var(--tinta-2);max-width:46ch}
@@ -778,6 +818,7 @@ button{font:inherit;color:inherit}
       <div><p class="rotulo">Entregas reais</p><h2 id="t-entregas" class="h2" style="margin-top:14px">Mais de 1.200 chaves entregues.</h2></div>
       <p class="lead">Clientes de verdade, carros de verdade. Toque numa foto para ver em tela cheia.</p>
     </div>
+    <div class="filtros" data-filtros role="group" aria-label="Filtrar entregas por tipo de carro" hidden></div>
     <div class="carrossel" role="region" aria-roledescription="carrossel" aria-label="Fotos de entregas">
       <ul class="galeria" data-galeria></ul>
       <button type="button" class="car-bt car-bt--esq" data-gal="-1" aria-label="Foto anterior"><svg aria-hidden="true"><use href="#i-esq"/></svg></button>
@@ -787,6 +828,13 @@ button{font:inherit;color:inherit}
       <span class="car-cont" data-car-cont aria-live="polite">1 / 13</span>
       <b class="car-barra" aria-hidden="true"><i data-car-barra></i></b>
       <button type="button" class="car-play" data-car-play aria-pressed="true"><span class="car-play-ic" aria-hidden="true"></span><span data-car-play-tx>Pausar</span></button>
+    </div>
+    <div class="videos" data-videos-bloco hidden>
+      <div class="videos-top rv">
+        <p class="rotulo">Na hora da entrega</p>
+        <h3 class="videos-tit">Veja como é receber o carro.</h3>
+      </div>
+      <div class="videos-grid" data-videos></div>
     </div>
     <div class="depos" data-depos hidden></div>
   </div>
@@ -959,6 +1007,7 @@ button{font:inherit;color:inherit}
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.6 2 2.18 6.4 2.18 11.83c0 1.74.46 3.43 1.33 4.92L2.1 22l5.4-1.4a9.9 9.9 0 0 0 4.54 1.1h.01c5.43 0 9.85-4.41 9.85-9.84A9.8 9.8 0 0 0 12.04 2Zm0 18.03h-.01a8.2 8.2 0 0 1-4.17-1.14l-.3-.18-3.2.83.86-3.12-.2-.32a8.14 8.14 0 0 1-1.25-4.36c0-4.52 3.68-8.2 8.2-8.2a8.2 8.2 0 0 1 8.19 8.2c0 4.52-3.68 8.2-8.2 8.2Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.22-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.13-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.66.31c-.22.25-.86.84-.86 2.05s.88 2.38 1 2.54c.13.17 1.74 2.65 4.2 3.72.59.25 1.05.4 1.4.52.6.19 1.13.16 1.56.1.47-.07 1.46-.6 1.66-1.18.2-.57.2-1.07.15-1.17-.06-.1-.23-.17-.47-.29Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></symbol>
   <symbol id="i-seta" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
   <symbol id="i-esq" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M19 12H5M11 6l-6 6 6 6"/></symbol>
   <symbol id="i-dir" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
@@ -1023,23 +1072,33 @@ const CONFIG = {
     acao:    { desktop: 'assets/fotos/acao.webp', mobile: '', alt: 'Fabricio Teixeira com o casal Joacir e esposa na entrega da Strada, com o carro coberto por um laço vermelho', largura: 1200, altura: 900 },
     video:   { mp4: '', poster: '' }, // opcional: 6–12 s de uma entrega, sem som
     // Entregas autorizadas. formato 'v' = vertical (4:5), 'h' = horizontal (4:3).
+    // tipo: 'SUV' | 'Picape' | 'Hatch' | 'Sedã' | 'Elétrico' (vira botão de filtro). hibrido: true marca o selo "Híbrido".
     // { src: 'assets/fotos/entrega-01.webp', formato: 'v', alt: 'descrição da foto', legenda: 'Nome · Cidade', carro: 'Modelo' }
     entregas: [
-      { src: 'assets/fotos/entrega-01.webp', formato: 'v', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Kelly de braços abertos ao lado do T-Cross branco com laço azul, na concessionária' },
-      { src: 'assets/fotos/entrega-02.webp', formato: 'h', legenda: 'Jair · Aracruz', carro: 'VW Saveiro Extreme', alt: 'Fabricio Teixeira e o cliente Jair ao lado da Saveiro' },
-      { src: 'assets/fotos/entrega-03.webp', formato: 'v', legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Zélia e uma acompanhante ao lado do Yaris Cross branco com laço vermelho' },
-      { src: 'assets/fotos/entrega-04.webp', formato: 'h', legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Fabricio Teixeira e o cliente Sérgio sorrindo diante do carro coberto com laço' },
-      { src: 'assets/fotos/entrega-05.webp', formato: 'v', legenda: 'José Manoel · Muniz Freire', carro: 'Chevrolet S10 LTZ', alt: 'Família do José Manoel ao lado da S10 com laço vermelho' },
-      { src: 'assets/fotos/entrega-06.webp', formato: 'h', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Fabricio Teixeira e a cliente Kelly diante do T-Cross coberto com capa azul' },
-      { src: 'assets/fotos/entrega-07.webp', formato: 'v', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Josenilton e o filho ao lado do Polo branco com laço vermelho' },
-      { src: 'assets/fotos/entrega-08.webp', formato: 'h', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fabricio Teixeira e o cliente Fernando dentro da Toro nova' },
-      { src: 'assets/fotos/entrega-09.webp', formato: 'v', legenda: 'Joacir · Aracruz', carro: 'Fiat Strada Freedom', alt: 'Joacir e a esposa ao lado da Strada coberta por capa vermelha com laço' },
-      { src: 'assets/fotos/entrega-10.webp', formato: 'h', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Fabricio Teixeira com Josenilton e o filho diante do Polo' },
-      { src: 'assets/fotos/entrega-11.webp', formato: 'v', legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Omoda 5 branco na concessionária, pronto para a entrega' },
-      { src: 'assets/fotos/entrega-12.webp', formato: 'h', legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Fabricio Teixeira com Zélia e uma acompanhante ao lado do Yaris Cross' },
-      { src: 'assets/fotos/entrega-13.webp', formato: 'v', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fiat Toro branca com laço vermelho na concessionária' },
+      { src: 'assets/fotos/entrega-01.webp', formato: 'v', marca: 'Volkswagen', tipo: 'SUV', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Kelly de braços abertos ao lado do T-Cross branco com laço azul, na concessionária' },
+      { src: 'assets/fotos/entrega-02.webp', formato: 'h', marca: 'Volkswagen', tipo: 'Picape', legenda: 'Jair · Aracruz', carro: 'VW Saveiro Extreme', alt: 'Fabricio Teixeira e o cliente Jair ao lado da Saveiro' },
+      { src: 'assets/fotos/entrega-03.webp', formato: 'v', marca: 'Toyota', tipo: 'SUV', hibrido: true, legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Zélia e uma acompanhante ao lado do Yaris Cross branco com laço vermelho' },
+      { src: 'assets/fotos/entrega-04.webp', formato: 'h', marca: 'Omoda', tipo: 'SUV', hibrido: true, legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Fabricio Teixeira e o cliente Sérgio sorrindo diante do carro coberto com laço' },
+      { src: 'assets/fotos/entrega-05.webp', formato: 'v', marca: 'Chevrolet', tipo: 'Picape', legenda: 'José Manoel · Muniz Freire', carro: 'Chevrolet S10 LTZ', alt: 'Família do José Manoel ao lado da S10 com laço vermelho' },
+      { src: 'assets/fotos/entrega-06.webp', formato: 'h', marca: 'Volkswagen', tipo: 'SUV', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense', alt: 'Fabricio Teixeira e a cliente Kelly diante do T-Cross coberto com capa azul' },
+      { src: 'assets/fotos/entrega-07.webp', formato: 'v', marca: 'Volkswagen', tipo: 'Hatch', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Josenilton e o filho ao lado do Polo branco com laço vermelho' },
+      { src: 'assets/fotos/entrega-08.webp', formato: 'h', marca: 'Fiat', tipo: 'Picape', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fabricio Teixeira e o cliente Fernando dentro da Toro nova' },
+      { src: 'assets/fotos/entrega-09.webp', formato: 'v', marca: 'Fiat', tipo: 'Picape', legenda: 'Joacir · Aracruz', carro: 'Fiat Strada Freedom', alt: 'Joacir e a esposa ao lado da Strada coberta por capa vermelha com laço' },
+      { src: 'assets/fotos/entrega-10.webp', formato: 'h', marca: 'Volkswagen', tipo: 'Hatch', legenda: 'Josenilton · Fundão', carro: 'VW Polo Track automático', alt: 'Fabricio Teixeira com Josenilton e o filho diante do Polo' },
+      { src: 'assets/fotos/entrega-11.webp', formato: 'v', marca: 'Omoda', tipo: 'SUV', hibrido: true, legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV', alt: 'Omoda 5 branco na concessionária, pronto para a entrega' },
+      { src: 'assets/fotos/entrega-12.webp', formato: 'h', marca: 'Toyota', tipo: 'SUV', hibrido: true, legenda: 'Zélia · Piúma', carro: 'Toyota Yaris Cross XRX Hybrid', alt: 'Fabricio Teixeira com Zélia e uma acompanhante ao lado do Yaris Cross' },
+      { src: 'assets/fotos/entrega-13.webp', formato: 'v', marca: 'Fiat', tipo: 'Picape', legenda: 'Fernando · Aracruz', carro: 'Fiat Toro Freedom', alt: 'Fiat Toro branca com laço vermelho na concessionária' },
     ],
   },
+
+  // Vídeos das entregas (MP4 comprimido + capa). formato 'h' = horizontal, 'v' = vertical.
+  // Só use vídeos com autorização do cliente e com o áudio conferido.
+  videos: [
+    { src: 'assets/videos/depo-jose-manoel.mp4', webm: 'assets/videos/depo-jose-manoel.webm', poster: 'assets/videos/depo-jose-manoel.webp', formato: 'h', duracao: '1:26', titulo: 'Conversa na entrega', legenda: 'José Manoel e família · Muniz Freire', carro: 'Chevrolet S10 LTZ' },
+    { src: 'assets/videos/entrega-kelly.mp4', webm: 'assets/videos/entrega-kelly.webm', poster: 'assets/videos/entrega-kelly.webp', formato: 'v', duracao: '0:26', titulo: 'A revelação', legenda: 'Kelly · Aracruz', carro: 'VW T-Cross Sense' },
+    { src: 'assets/videos/entrega-joacir.mp4', webm: 'assets/videos/entrega-joacir.webm', poster: 'assets/videos/entrega-joacir.webp', formato: 'v', duracao: '0:21', titulo: 'Tirando a capa', legenda: 'Joacir · Aracruz', carro: 'Fiat Strada Freedom' },
+    { src: 'assets/videos/entrega-sergio.mp4', webm: 'assets/videos/entrega-sergio.webm', poster: 'assets/videos/entrega-sergio.webp', formato: 'v', duracao: '0:21', titulo: 'Pronto para rodar', legenda: 'Sérgio · Aracruz', carro: 'Omoda 5 SHEV' },
+  ],
 
   // Depoimentos reais e autorizados. Vazio = a seção NÃO aparece.
   // { nome: 'Nome Sobrenome', cidade: 'Aracruz', texto: '...', autorizado: true }
@@ -1065,7 +1124,7 @@ const CONFIG = {
   if (!CONFIG.fotos.acao.desktop) addPend('Foto do Fabricio em ação (com cliente ou entregando chave)', 'A seção “Quem é” fica sem prova visual.');
   if (CONFIG.fotos.entregas.length) addPend('Confirmar a autorização dos 8 clientes da galeria para aparecer no site', 'Cliente sem autorização deve sair da lista CONFIG.fotos.entregas.');
   if (CONFIG.fotos.entregas.length < 10) addPend('10–15 fotos de entregas reais, com autorização por escrito', 'A galeria de entregas mostra espaços reservados.');
-  if (!CONFIG.fotos.video.mp4) addPend('Vídeo curto de uma entrega (opcional)', 'Sem impacto: o topo usa a foto.');
+  if ((CONFIG.videos || []).length) addPend('Conferir o áudio dos vídeos e a autorização de quem aparece neles', 'Vídeo sem autorização ou com áudio ruim deve sair de CONFIG.videos.');
   if (!CONFIG.logo) addPend('Logo em /assets/logo.svg', 'O site usa a marca em texto “FTS.”.');
   if (CONFIG.marcas.length !== 14) addPend('Nomes das 14 marcas', 'A assinatura “14 → 1” e a lista de marcas aparecem sem nomes.');
   CONFIG.numeros.filter(n => !n.confirmado).forEach(n => addPend(`Confirmar número: +${n.valor} ${n.unidade} ${n.rotulo}`, 'Na publicação, os números não confirmados somem.'));
@@ -1168,28 +1227,33 @@ const CONFIG = {
   if (!entregas.length) $('#entregas').remove();
   else {
     const dim = e => e.formato === 'h' ? 'width="1200" height="900"' : 'width="960" height="1200"';
-    const leg = e => e.legenda ? `<p class="gal-leg"><b>${e.legenda}</b>${e.carro ? `<span>${e.carro}</span>` : ''}</p>` : '';
+    const etiqueta = e => [e.tipo, e.hibrido ? 'Híbrido' : ''].filter(Boolean).map(t => `<em>${t}</em>`).join('');
+    const leg = e => e.legenda ? `<p class="gal-leg"><b>${e.legenda}</b>${e.carro ? `<span>${e.carro}</span>` : ''}${etiqueta(e) ? `<span class="gal-tags">${etiqueta(e)}</span>` : ''}</p>` : '';
     gal.innerHTML = entregas.map((e, i) => `<li class="rv${e.formato === 'h' ? ' largo' : ''}" style="--rd:${Math.min(i, 4) * .08}s"><button type="button" data-abre="${i}" aria-label="Ver em tela cheia: ${e.legenda || 'entrega ' + (i + 1)}${e.carro ? ', ' + e.carro : ''}"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')} — cliente + carro + Fabricio, com autorização]</span></div>` : `<img src="${e.src}" alt="${e.alt}" ${dim(e)} loading="lazy" decoding="async">`}</figure></button>${leg(e)}</li>`).join('');
-    // Lightbox
+    const fotos = $$('li', gal);
+    // Tela cheia: navega só pelas fotos do filtro ativo.
     const lb = $('#lightbox'), trilho = $('[data-lb-trilho]'), cont = $('[data-lb-contador]');
-    trilho.innerHTML = entregas.map((e, i) => `<div class="lb-slide${e.formato === 'h' ? ' largo' : ''}" role="group" aria-roledescription="foto" aria-label="${i + 1} de ${entregas.length}"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')}]</span></div>` : `<img src="${e.src}" alt="${e.alt}" loading="lazy">`}</figure>${e.legenda ? `<p><b>${e.legenda}</b>${e.carro ? ' · ' + e.carro : ''}</p>` : ''}</div>`).join('');
+    trilho.innerHTML = entregas.map((e, i) => `<div class="lb-slide${e.formato === 'h' ? ' largo' : ''}" role="group" aria-roledescription="foto"><figure class="foto${e.vazio ? ' vazia' : ''}">${e.vazio ? `<div class="foto-nota"><span class="pend">[PENDENTE: foto de entrega ${String(e.n).padStart(2, '0')}]</span></div>` : `<img src="${e.src}" alt="${e.alt}" loading="lazy">`}</figure>${e.legenda ? `<p><b>${e.legenda}</b>${e.carro ? ' · ' + e.carro : ''}</p>` : ''}</div>`).join('');
+    const slides = $$('.lb-slide', trilho), slidesVis = () => slides.filter(x => !x.hidden);
     const atual = () => Math.round(trilho.scrollLeft / trilho.clientWidth);
-    const vai = i => trilho.scrollTo({ left: Math.max(0, Math.min(entregas.length - 1, i)) * trilho.clientWidth, behavior: reduz ? 'auto' : 'smooth' });
-    const conta = () => cont.textContent = `${atual() + 1} / ${entregas.length}`;
+    const vai = i => trilho.scrollTo({ left: Math.max(0, Math.min(slidesVis().length - 1, i)) * trilho.clientWidth, behavior: reduz ? 'auto' : 'smooth' });
+    const conta = () => cont.textContent = `${atual() + 1} / ${slidesVis().length}`;
     trilho.addEventListener('scroll', () => requestAnimationFrame(conta), { passive: true });
     let origem = null;
-    gal.addEventListener('click', ev => { const b = ev.target.closest('[data-abre]'); if (!b) return; origem = b; lb.showModal(); trilho.scrollLeft = +b.dataset.abre * trilho.clientWidth; conta(); });
+    gal.addEventListener('click', ev => { const b = ev.target.closest('[data-abre]'); if (!b) return; origem = b; lb.showModal(); trilho.scrollLeft = slidesVis().indexOf(slides[+b.dataset.abre]) * trilho.clientWidth; conta(); });
     $$('[data-lb]').forEach(b => b.addEventListener('click', () => vai(atual() + +b.dataset.lb)));
     $('[data-lb-fechar]').addEventListener('click', () => lb.close());
     lb.addEventListener('keydown', ev => { if (ev.key === 'ArrowRight') vai(atual() + 1); if (ev.key === 'ArrowLeft') vai(atual() - 1); });
     lb.addEventListener('close', () => origem?.focus());
+
     // ----- Carrossel: setas, contador, arrastar com o mouse e passagem automática -----
-    const fotos = $$('li', gal), n = fotos.length, contEl = $('[data-car-cont]'), barra = $('[data-car-barra]');
+    const contEl = $('[data-car-cont]'), barra = $('[data-car-barra]');
     const btEsq = $('.car-bt--esq'), btDir = $('.car-bt--dir'), btPlay = $('[data-car-play]'), btPlayTx = $('[data-car-play-tx]');
-    const indice = () => { const x0 = gal.getBoundingClientRect().left + parseFloat(getComputedStyle(gal).paddingLeft); let melhor = 0, d = 1e9; fotos.forEach((li, i) => { const dd = Math.abs(li.getBoundingClientRect().left - x0); if (dd < d) { d = dd; melhor = i; } }); return melhor; };
+    const vis = () => fotos.filter(li => !li.hidden);
+    const indice = () => { const v = vis(), x0 = gal.getBoundingClientRect().left + parseFloat(getComputedStyle(gal).paddingLeft); let melhor = 0, d = 1e9; v.forEach((li, i) => { const dd = Math.abs(li.getBoundingClientRect().left - x0); if (dd < d) { d = dd; melhor = i; } }); return melhor; };
     const fim = () => gal.scrollLeft >= gal.scrollWidth - gal.clientWidth - 4;
-    const irPara = i => { i = (i + n) % n; gal.scrollTo({ left: fotos[i].offsetLeft - fotos[0].offsetLeft, behavior: reduz ? 'auto' : 'smooth' }); };
-    const atualizaCar = () => { const i = fim() ? n - 1 : indice(); contEl.textContent = `${i + 1} / ${n}`; barra.style.setProperty('--p', (i + 1) / n); btEsq.disabled = gal.scrollLeft < 4; btDir.disabled = fim(); };
+    const irPara = i => { const v = vis(); if (!v.length) return; i = (i + v.length) % v.length; gal.scrollTo({ left: v[i].offsetLeft - v[0].offsetLeft, behavior: reduz ? 'auto' : 'smooth' }); };
+    const atualizaCar = () => { const n = vis().length, i = fim() ? n - 1 : indice(); contEl.textContent = `${i + 1} / ${n}`; barra.style.setProperty('--p', (i + 1) / n); btEsq.disabled = gal.scrollLeft < 4; btDir.disabled = fim(); };
     let rafCar = 0; gal.addEventListener('scroll', () => { if (!rafCar) rafCar = requestAnimationFrame(() => { rafCar = 0; atualizaCar(); }); }, { passive: true });
     // Passagem automática: só com o carrossel na tela, para no hover/foco/toque e com reduced-motion.
     let tocando = !reduz, visivel = false, sobre = false, timer = 0;
@@ -1211,7 +1275,48 @@ const CONFIG = {
     addEventListener('pointerup', () => { if (!arr) return; arr = null; if (arrastou) { const i = indice(); gal.classList.remove('arrastando'); irPara(i); } });
     gal.addEventListener('click', e => { if (arrastou) { e.stopPropagation(); e.preventDefault(); arrastou = false; } }, true);
     gal.addEventListener('dragstart', e => e.preventDefault());
+
+    // ----- Filtro por tipo de carro (os botões só aparecem para tipos que existem nas entregas) -----
+    const ORDEM = ['SUV', 'Picape', 'Hatch', 'Sedã', 'Elétrico'];
+    const temHibrido = entregas.some(e => e.hibrido);
+    const tipos = ORDEM.filter(t => entregas.some(e => e.tipo === t));
+    const filtros = $('[data-filtros]');
+    if (filtros && tipos.length > 1) {
+      const conta2 = t => t === 'Todas' ? entregas.length : t === 'Híbrido' ? entregas.filter(e => e.hibrido).length : entregas.filter(e => e.tipo === t).length;
+      const lista = ['Todas', ...tipos, ...(temHibrido ? ['Híbrido'] : [])];
+      filtros.innerHTML = lista.map((t, k) => `<button type="button" class="filtro" data-filtro="${t}" aria-pressed="${k === 0}">${t}<small>${conta2(t)}</small></button>`).join('');
+      filtros.hidden = false;
+      filtros.addEventListener('click', ev => {
+        const b = ev.target.closest('[data-filtro]'); if (!b) return;
+        const t = b.dataset.filtro;
+        $$('[data-filtro]', filtros).forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+        entregas.forEach((e, k) => { const ok = t === 'Todas' || (t === 'Híbrido' ? e.hibrido : e.tipo === t); fotos[k].hidden = !ok; slides[k].hidden = !ok; if (ok) fotos[k].classList.add('dentro'); });
+        gal.scrollTo({ left: 0, behavior: 'auto' }); para(); atualizaCar();
+      });
+    }
     ajustaPlay(); atualizaCar();
+  }
+
+  // ----- Vídeos das entregas: só carregam quando a pessoa aperta o play -----
+  const vids = (CONFIG.videos || []).filter(v => v.src);
+  const vgrid = $('[data-videos]');
+  if (vgrid && vids.length) {
+    const card = (v, i) => `<figure class="vcard${v.formato === 'h' ? ' vcard--h' : ''} rv" style="--rd:${i * .08}s"><div class="vcard-midia"><button type="button" class="vcard-play" data-video="${i}" aria-label="Assistir: ${v.titulo}, ${v.legenda}"><img src="${v.poster}" alt="" loading="lazy" decoding="async" ${v.formato === 'h' ? 'width="854" height="480"' : 'width="480" height="854"'}><span class="vcard-ic" aria-hidden="true"><svg><use href="#i-play"/></svg></span>${v.duracao ? `<span class="vcard-dur">${v.duracao}</span>` : ''}</button></div><figcaption><b>${v.titulo}</b><span>${v.legenda}${v.carro ? ' · ' + v.carro : ''}</span></figcaption></figure>`;
+    const dest = vids.findIndex(v => v.formato === 'h');
+    vgrid.innerHTML = (dest >= 0 ? `<div class="v-dest">${card(vids[dest], dest)}</div>` : '') + `<div class="v-lista">${vids.map((v, i) => i === dest ? '' : card(v, i)).join('')}</div>`;
+    vgrid.closest('[data-videos-bloco]').hidden = false;
+    vgrid.addEventListener('click', ev => {
+      const b = ev.target.closest('[data-video]'); if (!b) return;
+      const v = vids[+b.dataset.video];
+      $$('video', vgrid).forEach(x => x.pause());
+      const el = document.createElement('video');
+      Object.assign(el, { poster: v.poster, controls: true, playsInline: true, preload: 'auto' });
+      // MP4 (H.264) para Safari/iPhone e a maioria dos navegadores; WebM como alternativa.
+      el.innerHTML = `<source src="${v.src}" type="video/mp4">${v.webm ? `<source src="${v.webm}" type="video/webm">` : ''}`;
+      el.setAttribute('aria-label', `${v.titulo}, ${v.legenda}`);
+      el.addEventListener('play', () => $$('video', vgrid).forEach(x => x !== el && x.pause()));
+      b.replaceWith(el); el.play().catch(() => {}); el.focus();
+    });
   }
   // Depoimentos: só reais e autorizados.
   const depos = CONFIG.depoimentos.filter(d => d.autorizado && d.nome && d.texto);
