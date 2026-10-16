@@ -1,0 +1,87 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/instrument-sans/wght.css';
+import 'lenis/dist/lenis.css';
+import '../styles/global.css';
+import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import { CONFIG, TEXTOS, revisao, pendencias } from '../lib/conteudo';
+
+const dominio = CONFIG.dominio.replace(/\/$/, '');
+const og = dominio ? `${dominio}/og-capa.jpg` : '/og-capa.jpg';
+const nPend = revisao ? pendencias().length : 0;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AutoDealer',
+      '@id': '#negocio',
+      name: 'FTS Multimarcas 0km',
+      alternateName: 'Fabricio Teixeira Multimarcas Zero Km',
+      legalName: CONFIG.empresa.razaoSocial,
+      taxID: CONFIG.empresa.cnpj,
+      foundingDate: `${CONFIG.empresa.desde}-01-17`,
+      description: 'Consultoria de venda de carros 0 km de 14 marcas, e alguns seminovos, em Aracruz-ES e região. O consultor vai até o cliente.',
+      ...(dominio ? { url: dominio + '/', image: og } : {}),
+      telephone: '+55-27-99849-0805',
+      email: CONFIG.email,
+      address: { '@type': 'PostalAddress', streetAddress: `${CONFIG.empresa.endereco}, Vila Rica`, addressLocality: 'Aracruz', addressRegion: 'ES', postalCode: CONFIG.empresa.cep, addressCountry: 'BR' },
+      areaServed: CONFIG.cidades.map(c => ({ '@type': 'City', name: c })),
+      brand: CONFIG.marcas.flatMap(m => m.split(' | ')).map(m => ({ '@type': 'Brand', name: m })),
+      sameAs: [`https://www.instagram.com/${CONFIG.instagram}/`],
+      employee: { '@id': '#fabricio' },
+    },
+    {
+      '@type': 'Person',
+      '@id': '#fabricio',
+      name: 'Fabricio Teixeira',
+      jobTitle: 'Consultor de vendas de automóveis 0 km multimarcas',
+      worksFor: { '@id': '#negocio' },
+      homeLocation: { '@type': 'Place', name: 'Aracruz, ES' },
+    },
+  ],
+};
+---
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{TEXTOS.seo.titulo}</title>
+  <meta name="description" content={TEXTOS.seo.descricao}>
+  <meta name="theme-color" content="#F3F4F0">
+  <meta name="color-scheme" content="light dark">
+  {dominio && <link rel="canonical" href={dominio + '/'}>}
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="FTS Multimarcas 0km">
+  <meta property="og:title" content="Seu próximo carro, sem rodar concessionária">
+  <meta property="og:description" content="Fabricio Teixeira pesquisa entre 14 marcas de 0 km e cuida da sua compra. Aracruz-ES e região.">
+  {dominio && <meta property="og:url" content={dominio + '/'}>}
+  <meta property="og:image" content={og}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Fabricio Teixeira, consultor de carros 0 km de 14 marcas em Aracruz-ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
+  <script is:inline>
+    // Liga os estados iniciais de animação antes da primeira pintura (sem JS, tudo aparece normal).
+    (function () { var d = document.documentElement; d.classList.add('mov'); if (matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('reduz'); })();
+  </script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+  {revisao && (
+    <aside class="aviso-revisao" aria-label="Aviso de revisão">
+      Versão de revisão: {nPend} itens pendentes marcados em amarelo. <a href="#pendencias">Ver a lista</a>
+    </aside>
+  )}
+  <slot />
+  <style>
+    .aviso-revisao { background: var(--pend-bg); color: var(--preto); font: 600 .8125rem/1.4 var(--f-texto); text-align: center; padding: 9px var(--gutter); }
+    .aviso-revisao a { font-weight: 700; display: inline-block; padding: 12px 4px; margin: -12px 0; }
+  </style>
+</body>
+</html>

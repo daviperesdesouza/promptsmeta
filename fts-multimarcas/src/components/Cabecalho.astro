@@ -1,0 +1,93 @@
+---
+import { wa, CONFIG } from '../lib/conteudo';
+const links = [
+  ['#procura', 'O que você procura'],
+  ['#como-funciona', 'Como funciona'],
+  ['#entregas', 'Entregas'],
+  ['#fabricio', 'Quem sou'],
+  ['#marcas', 'Marcas e região'],
+  ['#duvidas', 'Dúvidas'],
+];
+---
+<header class="topo" id="topo">
+  <div class="wrap topo-in">
+    <a class="marca" href="#conteudo" aria-label="FTS Multimarcas 0km, início">
+      <span class="marca-f">FTS<i>.</i></span>
+      <span class="marca-t">Multimarcas<br>0km</span>
+    </a>
+    <nav class="nav" aria-label="Principal">
+      {links.slice(1).map(([h, t]) => <a href={h}>{t}</a>)}
+    </nav>
+    <a class="btn topo-cta" data-wa="encontrar" data-cta href={wa('encontrar')} target="_blank" rel="noopener">
+      <svg aria-hidden="true"><use href="#i-wa" /></svg>Falar no WhatsApp
+    </a>
+    <button class="menu-bt" type="button" aria-expanded="false" aria-controls="menu">
+      <span class="linhas" aria-hidden="true"></span><span class="menu-bt-tx">Menu</span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <ol>
+    {links.map(([h, t], i) => <li><a href={h}><span class="num">0{i + 1}</span>{t}</a></li>)}
+  </ol>
+  <div class="menu-rodape">
+    <a class="btn" data-wa="encontrar" href={wa('encontrar')} target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa" /></svg>Quero encontrar meu próximo carro</a>
+    <p>WhatsApp {CONFIG.whatsappExibicao} · Aracruz e região</p>
+  </div>
+</div>
+
+<style>
+  .topo { position: sticky; top: 0; z-index: 60; background: rgba(243, 244, 240, .82); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid transparent; transition: border-color .3s, background .3s; }
+  :global(.topo.rolou) { border-bottom-color: var(--linha); }
+  .topo-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: var(--header-h); }
+  .marca { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px; }
+  .marca-f { font: 800 1.55rem/1 var(--f-display); font-stretch: 112%; letter-spacing: -.04em; }
+  .marca-f i { font-style: normal; color: var(--verde); }
+  .marca-t { font: 700 .62rem/1.15 var(--f-display); font-stretch: 125%; letter-spacing: .14em; text-transform: uppercase; color: var(--tinta-2); border-left: 1px solid var(--linha); padding-left: 10px; }
+  .nav { display: none; }
+  .nav a { position: relative; text-decoration: none; font-weight: 500; font-size: .9375rem; padding: 12px 2px; }
+  .nav a::after { content: ""; position: absolute; left: 2px; right: 2px; bottom: 6px; height: 2px; background: var(--verde); transform: scaleX(0); transform-origin: right; transition: transform .35s var(--e-saida); }
+  .nav a:hover::after, .nav a.atual::after { transform: scaleX(1); transform-origin: left; }
+  .topo-cta { display: none; min-height: 44px; padding: 0 18px 0 14px; font-size: .9375rem; }
+  .topo-cta svg { width: 20px; height: 20px; }
+  .menu-bt { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; min-width: 44px; padding: 0 14px; border-radius: 999px; border: 1.5px solid var(--preto); background: transparent; cursor: pointer; font-weight: 600; font-size: .9375rem; position: relative; z-index: 80; transition: color .3s, border-color .3s; }
+  .linhas { position: relative; width: 18px; height: 10px; }
+  .linhas::before, .linhas::after { content: ""; position: absolute; left: 0; right: 0; height: 2px; background: currentColor; border-radius: 2px; transition: transform .45s var(--e-saida), top .45s var(--e-saida); }
+  .linhas::before { top: 0; } .linhas::after { top: 8px; }
+  /* Sem JS o menu não abre: o botão some e a página segue navegável pela rolagem. */
+  :global(html:not(.mov)) .menu-bt { display: none; }
+  @media (min-width: 1100px) {
+    .nav { display: flex; gap: clamp(16px, 2vw, 30px); }
+    .topo-cta { display: inline-flex; }
+    .menu-bt { display: none; }
+  }
+
+  /* Menu mobile: painel escuro que se abre em círculo a partir do botão. */
+  .menu { position: fixed; inset: 0; z-index: 70; background: var(--preto); color: var(--branco); display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: calc(var(--header-h) + 72px) var(--gutter) calc(24px + env(safe-area-inset-bottom)); overflow-y: auto; clip-path: circle(0 at calc(100% - 44px) 34px); transition: clip-path .7s var(--e-meio); }
+  .menu[hidden] { display: none; }
+  :global(.menu-aberto) .menu { clip-path: circle(150% at calc(100% - 44px) 34px); }
+  .menu li { overflow: hidden; }
+  .menu ol a { display: flex; align-items: baseline; gap: 14px; text-decoration: none; font: 800 clamp(1.9rem, 8.4vw, 3rem)/1.14 var(--f-display); letter-spacing: -.02em; padding: 6px 0; transform: translateY(110%); transition: transform .6s var(--e-saida); }
+  .menu ol a .num { font-size: .78rem; font-weight: 700; color: var(--verde-400); letter-spacing: .08em; }
+  :global(.menu-aberto) .menu ol a { transform: none; }
+  :global(.menu-aberto) .menu li:nth-child(2) a { transition-delay: .04s; }
+  :global(.menu-aberto) .menu li:nth-child(3) a { transition-delay: .08s; }
+  :global(.menu-aberto) .menu li:nth-child(4) a { transition-delay: .12s; }
+  :global(.menu-aberto) .menu li:nth-child(5) a { transition-delay: .16s; }
+  :global(.menu-aberto) .menu li:nth-child(6) a { transition-delay: .2s; }
+  .menu-rodape { display: grid; gap: 14px; opacity: 0; transform: translateY(12px); transition: opacity .4s .3s, transform .5s .3s var(--e-saida); }
+  :global(.menu-aberto) .menu-rodape { opacity: 1; transform: none; }
+  .menu-rodape .btn { width: 100%; }
+  .menu-rodape p { color: var(--nevoa); font-size: var(--t-peq); }
+  :global(html.menu-aberto) { overflow: hidden; }
+  :global(.menu-aberto) .topo { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; z-index: 75; }
+  :global(.menu-aberto) .marca { color: var(--branco); }
+  :global(.menu-aberto) .marca-t { color: var(--nevoa); border-color: var(--grafite); }
+  :global(.menu-aberto) .menu-bt { color: var(--branco); border-color: var(--branco); }
+  :global(.menu-aberto) .linhas::before { top: 4px; transform: rotate(45deg); }
+  :global(.menu-aberto) .linhas::after { top: 4px; transform: rotate(-45deg); }
+  :global(.reduz) .menu { clip-path: none !important; transition: opacity .3s; opacity: 0; }
+  :global(.reduz.menu-aberto) .menu { opacity: 1; }
+  :global(.reduz) .menu ol a, :global(.reduz) .menu-rodape { transform: none !important; }
+</style>

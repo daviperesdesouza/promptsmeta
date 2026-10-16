@@ -1,0 +1,35 @@
+---
+import { CONFIG, wa, revisao, servicoVisivel, servicoPendente } from '../lib/conteudo';
+---
+{servicoVisivel('frotas') && (
+  <section class="secao empresas" id="empresas" aria-labelledby="t-empresas">
+    <div class="wrap grade">
+      <div class="emp-esq">
+        <p class="rotulo rv">Empresas e frotas {revisao && servicoPendente('frotas') && <span class="pend">[PENDENTE: confirmar]</span>}</p>
+        <h2 id="t-empresas" class="h2 tit">Empresa, frota ou CNPJ? Também resolvo.</h2>
+      </div>
+      <div class="emp-dir rv">
+        <p class="emp-tx">Condições especiais para empresas, com carros de marcas diferentes organizados por um único consultor.</p>
+        <p class="emp-rot">Para quem eu vendo</p>
+        <ul class="publicos">{CONFIG.publicos.map(p => <li>{p}</li>)}</ul>
+        <a class="btn btn--claro" data-wa="frota" data-cta href={wa('frota')} target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa" /></svg>Falar sobre minha frota</a>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .empresas { background: var(--verde); color: var(--branco); position: relative; overflow: hidden; isolation: isolate; }
+  /* Faixas diagonais discretas: o "asfalto" visto de cima, em verde. */
+  .empresas::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .12; background: repeating-linear-gradient(115deg, transparent 0 42px, rgba(255,255,255,.55) 42px 44px, transparent 44px 118px); }
+  .empresas .grade { row-gap: 30px; align-items: end; }
+  .emp-esq, .emp-dir { grid-column: 1 / -1; }
+  .empresas .rotulo { color: var(--branco); margin-bottom: 14px; }
+  .empresas .rotulo::before { background: var(--branco); }
+  .emp-tx { font-size: var(--t-lead); line-height: 1.5; max-width: 40ch; }
+  .emp-rot { margin-top: 22px; font: 700 var(--t-rotulo)/1 var(--f-display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; }
+  .publicos { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .publicos li { padding: 9px 14px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .6); font-size: .9375rem; font-weight: 500; }
+  .emp-dir .btn { margin-top: 26px; }
+  @media (min-width: 1024px) { .emp-esq { grid-column: 1 / 7; } .emp-dir { grid-column: 8 / -1; } }
+</style>

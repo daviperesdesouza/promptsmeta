@@ -1,0 +1,79 @@
+---
+import { CONFIG, wa, revisao, pendencias } from '../lib/conteudo';
+const lista = revisao ? pendencias() : [];
+const ano = new Date().getFullYear();
+---
+<footer class="rodape escuro">
+  <div class="wrap">
+    <div class="rod-grade">
+      <div class="rod-col rod-marca">
+        <a class="marca" href="#conteudo" aria-label="FTS Multimarcas 0km, voltar ao início"><span class="marca-f">FTS<i>.</i></span><span class="marca-t">Multimarcas<br>0km</span></a>
+        <p>Carros 0 km de 14 marcas, com um consultor só: Fabricio Teixeira.</p>
+      </div>
+      <div class="rod-col">
+        <h2>Contato</h2>
+        <ul>
+          <li><a data-wa="encontrar" href={wa('encontrar')} target="_blank" rel="noopener">WhatsApp {CONFIG.whatsappExibicao}</a></li>
+          <li><a href={`mailto:${CONFIG.email}`}>{CONFIG.email}</a></li>
+          <li><a href={`https://www.instagram.com/${CONFIG.instagram}/`} target="_blank" rel="noopener">Instagram @{CONFIG.instagram}</a></li>
+          <li>{CONFIG.facebook.url ? <a href={CONFIG.facebook.url} target="_blank" rel="noopener">Facebook: {CONFIG.facebook.nome}</a> : <>Facebook: {CONFIG.facebook.nome}</>}</li>
+          {CONFIG.atendimento && <li>Atendimento: {CONFIG.atendimento}</li>}
+        </ul>
+      </div>
+      <div class="rod-col">
+        <h2>Onde eu atendo</h2>
+        <p>{CONFIG.cidades.join(', ')} e entorno, no Espírito Santo. Eu vou até você.</p>
+      </div>
+      <div class="rod-col">
+        <h2>Empresa</h2>
+        <p>{CONFIG.empresa.razaoSocial}<br>CNPJ {CONFIG.empresa.cnpj}<br>{CONFIG.empresa.endereco}<br>{CONFIG.empresa.bairroCidade} · {CONFIG.empresa.cep}</p>
+      </div>
+    </div>
+    {revisao && (
+      <div class="pendencias" id="pendencias">
+        <h2>Pendências desta versão ({lista.length})</h2>
+        <ol>{lista.map(p => <li><strong>{p.item}</strong><small>{p.impacto}</small></li>)}</ol>
+      </div>
+    )}
+    <div class="rod-base">
+      <p>© {ano} FTS Multimarcas 0km</p>
+      <p><a href="#topo">Voltar ao topo ↑</a></p>
+    </div>
+  </div>
+  <a class="wa-fixo" data-wa="encontrar" data-wa-fixo href={wa('encontrar')} target="_blank" rel="noopener" aria-label="Falar com o Fabricio no WhatsApp" tabindex="-1">
+    <svg aria-hidden="true"><use href="#i-wa" /></svg><span class="wa-tx">Falar com o Fabricio</span>
+  </a>
+</footer>
+
+<style>
+  .rodape { padding-block: 64px calc(40px + env(safe-area-inset-bottom)); font-size: var(--t-peq); color: var(--nevoa); border-top: 1px solid var(--grafite); }
+  .rod-grade { display: grid; gap: 36px; }
+  @media (min-width: 768px) { .rod-grade { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1100px) { .rod-grade { grid-template-columns: 1.3fr 1fr 1fr 1fr; } }
+  .marca { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--branco); min-height: 44px; }
+  .marca-f { font: 800 1.55rem/1 var(--f-display); font-stretch: 112%; letter-spacing: -.04em; }
+  .marca-f i { font-style: normal; color: var(--verde-400); }
+  .marca-t { font: 700 .62rem/1.15 var(--f-display); font-stretch: 125%; letter-spacing: .14em; text-transform: uppercase; color: var(--nevoa); border-left: 1px solid var(--grafite); padding-left: 10px; }
+  .rod-marca p { margin-top: 16px; max-width: 30ch; }
+  h2 { font: 700 var(--t-rotulo)/1.2 var(--f-display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; color: var(--branco); margin-bottom: 14px; }
+  li { padding: 2px 0; }
+  .rod-col a { text-decoration: none; display: inline-flex; align-items: center; min-height: 40px; }
+  .rodape a:hover { color: var(--verde-400); }
+  .pendencias { margin-top: 44px; padding: 24px; border-radius: var(--r-peq); background: var(--pend-bg); color: var(--preto); }
+  .pendencias h2 { color: var(--preto); }
+  .pendencias ol { list-style: decimal; padding-left: 20px; display: grid; gap: 8px; }
+  .pendencias small { display: block; color: #3a3a30; }
+  .rod-base { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--grafite); display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .rod-base a { text-decoration: none; display: inline-flex; min-height: 44px; align-items: center; }
+
+  /* Botão fixo de WhatsApp: aparece depois do topo e some quando outro botão entra na área dele. */
+  .wa-fixo { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); z-index: 50; display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 60px; min-width: 60px; padding: 0 20px; border-radius: 999px; background: var(--verde); color: var(--branco); text-decoration: none; font-weight: 600; box-shadow: 0 0 0 2px rgba(255, 255, 255, .9), 0 16px 32px -12px rgba(4, 132, 55, .7), 0 2px 6px rgba(0, 0, 0, .18); transform: translateY(140%) scale(.9); opacity: 0; pointer-events: none; transition: transform .5s var(--e-mola), opacity .3s, background .25s; }
+  :global(.wa-fixo.visivel) { transform: none; opacity: 1; pointer-events: auto; }
+  .wa-fixo:hover { background: var(--verde-600); }
+  .wa-fixo svg { width: 26px; height: 26px; flex: none; }
+  .wa-tx { white-space: nowrap; }
+  @media (max-width: 899px) { .wa-fixo { padding: 0; width: 60px; } .wa-tx { display: none; } }
+  /* Do 1100px para cima o cabeçalho já mostra o botão de WhatsApp o tempo todo. */
+  @media (min-width: 1100px) { .wa-fixo { display: none; } }
+  :global(.reduz) .wa-fixo { transform: none; transition: opacity .3s; }
+</style>

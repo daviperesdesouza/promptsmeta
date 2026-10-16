@@ -1,0 +1,120 @@
+---
+import { getImage } from 'astro:assets';
+import { CONFIG, wa, foto, logosDa } from '../lib/conteudo';
+
+const retrato = await getImage({ src: foto(CONFIG.fotos.retrato.src), width: 420, format: 'webp', quality: 78 });
+const chips = await Promise.all(CONFIG.marcas.map(async marca => ({
+  marca,
+  logos: await Promise.all(logosDa(marca).map(async l => {
+    const g = await getImage({ src: l.img, width: 240, format: 'webp', quality: 82 });
+    return { src: g.src, w: g.attributes.width, h: g.attributes.height };
+  })),
+})));
+---
+<section class="cv" id="diferencial" aria-labelledby="t-cv" data-assinatura>
+  <div class="cv-palco">
+    <div class="wrap cv-quadro">
+      <div class="cv-textos">
+        <div class="cv-fase ativa" data-fase="0">
+          <p class="rotulo">O diferencial</p>
+          <h2 id="t-cv" class="cv-tit">14 marcas. <span class="verde-tx">Um consultor.</span></h2>
+          <p class="cv-p">Sozinho, você visitaria uma concessionária por marca. Comigo, as 14 chegam até você numa conversa só.</p>
+        </div>
+        <div class="cv-fase" data-fase="1" aria-hidden="true">
+          <p class="rotulo">O caminho</p>
+          <p class="cv-tit">Eu faço esse caminho por você.</p>
+          <p class="cv-p">Eu pesquiso, comparo e trago as opções. Você não precisa sair de casa para isso.</p>
+        </div>
+        <div class="cv-fase" data-fase="2" aria-hidden="true">
+          <p class="rotulo">O resultado</p>
+          <p class="cv-tit">Tudo cabe em <span class="verde-tx">uma conversa.</span></p>
+          <p class="cv-p">Uma pessoa, um WhatsApp, do primeiro “oi” até a chave na mão.</p>
+        </div>
+      </div>
+
+      <ul class="cv-chips" aria-label="As 14 marcas">
+        {chips.map((c, i) => (
+          <li class:list={['chip', { 'chip--duplo': c.logos.length > 1 }]} style={`--i:${i}`}>
+            {c.logos.length
+              ? c.logos.map(l => <img src={l.src} alt="" width={l.w} height={l.h} loading="lazy" decoding="async" />)
+              : <span class="chip-txt">{c.marca}</span>}
+            <span class="sr">{c.marca.replace(' | ', ' e ')}</span>
+          </li>
+        ))}
+      </ul>
+
+      <svg class="cv-svg" aria-hidden="true" focusable="false"></svg>
+
+      <div class="cv-no">
+        <div class="cv-circulo">
+          <img src={retrato.src} alt="" width="420" height="420" loading="lazy" decoding="async">
+        </div>
+        <span class="cv-selo" aria-hidden="true"><svg><use href="#i-wa" /></svg></span>
+      </div>
+
+      <div class="cv-acao">
+        <a class="btn" data-wa="encontrar" data-cta href={wa('encontrar')} target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa" /></svg>Falar com o Fabricio</a>
+        <p class="cv-acao-tx">Mensagem pronta. É só enviar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cv { position: relative; background: var(--piso); }
+  .cv-palco { position: relative; padding-block: var(--secao); }
+  .cv-quadro { position: relative; }
+  .cv-textos { display: grid; max-width: 34rem; }
+  .cv-fase { grid-area: 1 / 1; }
+  .cv-fase + .cv-fase { display: none; }
+  .cv-fase .rotulo { margin-bottom: 14px; }
+  .cv-tit { font: 800 clamp(2.05rem, 1.25rem + 3.1vw, 4rem)/.98 var(--f-display); letter-spacing: -.03em; color: var(--preto); text-wrap: balance; }
+  .cv-p { margin-top: 14px; color: var(--tinta-2); font-size: var(--t-lead); line-height: 1.45; max-width: 34ch; }
+
+  /* Estado parado (sem JS ou com reduzir movimento): logos em grade, retrato e botão. */
+  .cv-chips { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .chip { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; height: 54px; padding: 7px 10px; border-radius: 12px; background: var(--branco); box-shadow: 0 0 0 1px var(--linha), 0 10px 22px -18px rgba(16, 16, 16, .5); }
+  .chip img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+  .chip--duplo img { max-height: calc(50% - 2px); }
+  .chip-txt { font: 700 .8rem/1 var(--f-display); }
+  .cv-svg { display: none; }
+  .cv-no { position: relative; margin-top: 40px; width: max-content; }
+  .cv-circulo { width: 132px; height: 132px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 6px var(--piso), 0 0 0 8px var(--verde), 0 24px 40px -20px rgba(16, 16, 16, .45); }
+  .cv-circulo img { width: 100%; height: 100%; object-fit: cover; }
+  .cv-selo { position: absolute; right: 2%; bottom: 2%; width: 26%; aspect-ratio: 1; min-width: 34px; border-radius: 50%; background: var(--verde); color: var(--branco); display: grid; place-items: center; box-shadow: 0 0 0 4px var(--piso); }
+  .cv-selo svg { width: 56%; height: 56%; }
+  .cv-acao { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+  .cv-acao-tx { font-size: var(--t-peq); color: var(--tinta-2); }
+
+  /* Estado vivo (com JS e movimento): o palco fica preso na tela enquanto a rolagem desenha as rotas. */
+  :global(.cv--vivo) { height: 300svh; }
+  :global(.cv--vivo) .cv-palco { position: sticky; top: 0; height: 100svh; min-height: 560px; padding: 0; overflow: hidden; }
+  :global(.cv--vivo) .cv-quadro { height: 100%; }
+  :global(.cv--vivo) .cv-textos { position: absolute; z-index: 4; left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + clamp(14px, 3vh, 36px)); }
+  :global(.cv--vivo) .cv-fase + .cv-fase { display: block; }
+  :global(.cv--vivo) .cv-fase { transition: opacity .45s var(--e-saida) .12s, transform .55s var(--e-saida) .12s; }
+  :global(.cv--vivo) .cv-fase:not(.ativa) { opacity: 0; transform: translateY(14px); pointer-events: none; transition-duration: .2s; transition-delay: 0s; }
+  :global(.cv--compacto) .cv-p { display: none; }
+  :global(.cv--vivo) .cv-chips { margin: 0; display: block; }
+  /* Os logos entram juntos quando o palco aparece; depois só as rotas mudam com a rolagem. */
+  :global(.cv--vivo) .chip { position: absolute; left: var(--x); top: var(--y); z-index: 3; width: var(--cw); height: var(--ch); opacity: 0; transform: scale(.82); transition: opacity .45s var(--e-saida), transform .6s var(--e-mola); transition-delay: calc(var(--i) * 32ms); }
+  :global(.cv--entrou) .chip { opacity: 1; transform: none; }
+  :global(.cv--vivo) .cv-svg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; z-index: 2; overflow: visible; }
+  :global(.cv--vivo) .cv-no { position: absolute; z-index: 5; margin: 0; left: var(--x); top: var(--y); transform: scale(var(--ns, 1)); opacity: var(--no, 1); }
+  :global(.cv--vivo) .cv-circulo { width: var(--cd); height: var(--cd); }
+  :global(.cv--vivo) .cv-acao { position: absolute; z-index: 5; margin: 0; left: var(--ax); top: var(--ay); opacity: var(--nb, 1); transform: translateY(calc((1 - var(--nb, 1)) * 12px)); }
+  :global(.cv--vivo) .cv-acao .btn { white-space: nowrap; }
+  :global(.cv-svg path) { fill: none; stroke: var(--verde); stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  :global(.cv-svg .trilho) { stroke: var(--linha); stroke-dasharray: 2 6; }
+  :global(.cv-svg circle) { fill: var(--verde); }
+  @media (min-width: 900px) {
+    .cv-circulo { width: 200px; height: 200px; }
+    :global(.cv--vivo) .cv-textos { top: calc(50% + var(--header-h) / 2 - 36px); transform: translateY(-50%); right: auto; width: min(36%, 30rem); }
+  }
+  @media (max-width: 899px) { :global(.cv--vivo) .chip { padding: 4px 8px; } :global(.cv--vivo) .cv-acao { justify-content: center; } :global(.cv--vivo) .cv-acao-tx { display: none; } }
+</style>
+
+<script>
+  import { iniciarAssinatura } from '../scripts/assinatura';
+  iniciarAssinatura();
+</script>

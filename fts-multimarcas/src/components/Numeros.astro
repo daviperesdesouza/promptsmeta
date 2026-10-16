@@ -1,0 +1,71 @@
+---
+import { numerosVisiveis, revisao } from '../lib/conteudo';
+
+// Cada número vira janelas de hodômetro. A faixa tem 0–9 três vezes; o dígito
+// final fica na última volta, para o rolo girar como num painel de verdade.
+const janelas = (valor: number) => {
+  const txt = valor.toLocaleString('pt-BR');
+  const digitos = txt.replace(/\D/g, '').length;
+  let pos = 0;
+  return [...txt].map(ch => {
+    if (!/\d/.test(ch)) return { sep: ch };
+    const p = pos++;
+    const voltas = Math.max(0, 2 - (digitos - 1 - p)); // casas da direita giram mais
+    return { d: Number(ch), i: Number(ch) + 10 * voltas, p };
+  });
+};
+const FAIXA = '012345678901234567890123456789'.split('');
+---
+<section class="numeros escuro" aria-labelledby="t-numeros">
+  <div class="wrap">
+    <div class="topo-num">
+      <h2 id="t-numeros" class="tit">Muita estrada até aqui.</h2>
+      <p class="rotulo rv">O hodômetro do Fabricio</p>
+    </div>
+    <div class="painel">
+      {numerosVisiveis.map((n, k) => (
+        <div class:list={['instr', 'rv', { 'instr--destaque': n.destaque }]} style={`--rd:${k * 0.08}s`}>
+          <p class="odo" aria-hidden="true">
+            {n.mais && <span class="mais">+</span>}
+            {janelas(n.valor).map(j => 'sep' in j
+              ? <span class="sep">{j.sep}</span>
+              : <span class="jan" style={`--i:${j.i};--p:${j.p}`}><span class="faixa">{FAIXA.map(x => <span>{x}</span>)}</span></span>)}
+            {n.unidade && <span class="uni">{n.unidade}</span>}
+          </p>
+          <p class="sr">{n.mais ? 'mais de ' : ''}{n.valor.toLocaleString('pt-BR')} {n.unidade} {n.rotulo}</p>
+          <p class="rot" aria-hidden="true">{n.rotulo}{!n.confirmado && revisao && <> <span class="pend">[PENDENTE: confirmar]</span></>}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .numeros { padding-block: clamp(72px, 9vw, 132px); }
+  .topo-num { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 32px; margin-bottom: clamp(36px, 5vw, 72px); }
+  .topo-num h2 { font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3.2rem); max-width: 15ch; }
+  .painel { display: grid; gap: 0; border-top: 1px solid var(--grafite); }
+  .instr { padding: 26px 0 28px; border-bottom: 1px solid var(--grafite); display: grid; gap: 14px; }
+  .odo { display: flex; align-items: flex-end; gap: .045em; font: 800 clamp(2.5rem, 1.5rem + 3.6vw, 4.4rem)/1 var(--f-display); font-stretch: 125%; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+  .instr--destaque .odo { font-size: clamp(3.3rem, 1.4rem + 8.2vw, 9rem); }
+  .mais { color: var(--verde-400); margin-right: .06em; }
+  .sep { color: var(--verde-400); width: .3em; text-align: center; }
+  .uni { font-size: .34em; font-stretch: 112%; font-weight: 700; margin-left: .3em; align-self: center; color: var(--branco); letter-spacing: .02em; }
+  /* Janela do hodômetro */
+  .jan { position: relative; display: inline-block; height: 1em; width: .78em; overflow: hidden; border-radius: .08em; background: linear-gradient(180deg, #050505, #1d1f1d 48%, #1d1f1d 52%, #050505); box-shadow: inset 0 0 0 1px #2c2f2c, inset 0 .08em .12em rgba(0,0,0,.8), inset 0 -.08em .12em rgba(0,0,0,.8); }
+  .jan::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,0) 26%, rgba(0,0,0,0) 74%, rgba(0,0,0,.55)); }
+  .faixa { display: flex; flex-direction: column; text-align: center; transform: translateY(calc(var(--i) * -1em)); }
+  .faixa span { height: 1em; line-height: 1; }
+  :global(.mov:not(.reduz)) .odo:not(.rodou) .faixa { transform: translateY(0); }
+  :global(.mov:not(.reduz)) .odo.rodou .faixa { transition: transform 1.9s cubic-bezier(.16, .84, .24, 1) calc(var(--p) * .12s); }
+  .rot { color: var(--nevoa); font-size: var(--t-peq); line-height: 1.4; max-width: 26ch; }
+  .instr--destaque .rot { font-size: var(--t-lead); color: var(--branco); }
+  @media (min-width: 900px) {
+    .painel { grid-template-columns: repeat(12, 1fr); border-top: 0; column-gap: var(--gap); }
+    .instr { border-bottom: 0; }
+    .instr--destaque { grid-column: 1 / 8; grid-row: 1 / 4; align-content: end; padding-right: 24px; }
+    .instr:not(.instr--destaque) { grid-column: 8 / -1; grid-template-columns: auto 1fr; align-items: end; gap: 22px; border-top: 1px solid var(--grafite); padding: 24px 0 26px 28px; border-left: 1px solid var(--grafite); }
+    .instr:not(.instr--destaque) .rot { justify-self: end; text-align: right; }
+    .instr:not(.instr--destaque):nth-child(2) { border-top: 0; }
+  }
+</style>

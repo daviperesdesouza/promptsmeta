@@ -1,0 +1,48 @@
+---
+import { CONFIG, TEXTOS, revisao, servicoVisivel, servicoPendente, respostaMarcas } from '../lib/conteudo';
+const perguntas = TEXTOS.faq
+  .filter(q => !q.servico || servicoVisivel(q.servico))
+  .map(q => {
+    if (q.p.startsWith('Quais marcas')) return { ...q, r: respostaMarcas() };
+    if (q.servico) return { ...q, r: CONFIG.respostas[q.servico] || '', pend: revisao && servicoPendente(q.servico) };
+    return q;
+  });
+---
+<section class="secao duvidas" id="duvidas" aria-labelledby="t-faq">
+  <div class="wrap grade">
+    <div class="faq-topo">
+      <p class="rotulo rv">Dúvidas</p>
+      <h2 id="t-faq" class="h2 tit">Perguntas rápidas.</h2>
+      <p class="lead rv">Não achou a sua? Pergunte direto no WhatsApp.</p>
+    </div>
+    <div class="faq-lista rv">
+      {perguntas.map(q => (
+        <details>
+          <summary>{q.p}<i aria-hidden="true"></i></summary>
+          <p class="resp">{q.r || (revisao && <span class="pend">[PENDENTE: resposta confirmada]</span>)}{'pend' in q && q.pend && <> <span class="pend">[PENDENTE: confirmar]</span></>}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .duvidas .grade { row-gap: 32px; }
+  .faq-topo { grid-column: 1 / -1; }
+  .faq-topo .rotulo { margin-bottom: 14px; }
+  .faq-topo .lead { margin-top: 16px; }
+  .faq-lista { grid-column: 1 / -1; border-top: 2px solid var(--preto); }
+  @media (min-width: 1024px) { .faq-topo { grid-column: 1 / 5; position: sticky; top: calc(var(--header-h) + 32px); align-self: start; } .faq-lista { grid-column: 6 / -1; } }
+  details { border-bottom: 1px solid var(--linha); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; min-height: 66px; padding: 18px 0; font: 700 clamp(1.08rem, 1rem + .45vw, 1.35rem)/1.25 var(--f-display); letter-spacing: -.01em; transition: color .25s; }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--verde-600); }
+  summary i { flex: none; width: 38px; height: 38px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px currentColor; position: relative; transition: background .3s, color .3s; }
+  summary i::before, summary i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 12px; height: 2px; background: currentColor; border-radius: 2px; transform: translate(-50%, -50%); }
+  summary i::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .4s var(--e-saida); }
+  details[open] summary i { background: var(--verde); color: var(--branco); box-shadow: none; }
+  details[open] summary i::after { transform: translate(-50%, -50%) rotate(0); }
+  .resp { padding: 0 54px 24px 0; color: var(--tinta-2); max-width: 60ch; }
+  :global(.mov:not(.reduz)) details[open] .resp { animation: abre .45s var(--e-saida); }
+  @keyframes abre { from { opacity: 0; transform: translateY(-6px); } }
+</style>

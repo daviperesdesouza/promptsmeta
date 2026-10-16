@@ -1,0 +1,69 @@
+---
+import { CONFIG, wa, revisao, servicoVisivel, servicoPendente } from '../lib/conteudo';
+const chips = [['', 'Ainda não sei'], ['SUV', 'SUV'], ['Picape', 'Picape'], ['Sedã', 'Sedã'], ['Hatch', 'Hatch'], ['Elétrico/Híbrido', 'Elétrico ou híbrido']];
+const intencoes = [
+  { i: 'encontrar', t: 'Quero encontrar meu próximo carro', s: 'Você me conta, eu comparo entre as marcas' },
+  { i: 'condicoes', t: 'Quero saber as condições', s: 'Para o carro que você já tem em mente' },
+  servicoVisivel('avaliacaoUsado') && { i: 'usado', t: 'Quero avaliar meu usado', s: 'Para dar de entrada no 0 km', pend: servicoPendente('avaliacaoUsado') },
+  servicoVisivel('frotas') && { i: 'frota', t: 'Falar sobre minha frota', s: 'Para empresas', pend: servicoPendente('frotas') },
+].filter(Boolean) as { i: 'encontrar' | 'condicoes' | 'usado' | 'frota'; t: string; s: string; pend?: boolean }[];
+---
+<section class="secao escuro final" id="contato" aria-labelledby="t-final">
+  <div class="wrap grade">
+    <div class="final-esq">
+      <p class="rotulo rv">Vamos conversar</p>
+      <h2 id="t-final" class="final-tit tit">Me conta o que você procura.</h2>
+      <p class="lead rv">Escolha o tipo de carro, se quiser, e toque no que você precisa. A mensagem já vai pronta.</p>
+      <p class="final-num rv"><span>WhatsApp</span> <b class="num">{CONFIG.whatsappExibicao}</b></p>
+    </div>
+    <div class="final-dir rv" style="--rd:.1s">
+      <fieldset class="chips" data-chips>
+        <legend>Tipo de carro (opcional)</legend>
+        {chips.map(([v, t], k) => (
+          <label class="chip-op"><input type="radio" name="cat" value={v} checked={k === 0} /><span>{t}</span></label>
+        ))}
+      </fieldset>
+      <div class="intencoes">
+        {intencoes.map(x => (
+          <a class="intencao" data-wa={x.i} data-cta href={wa(x.i)} target="_blank" rel="noopener">
+            <span><b>{x.t}</b><small>{x.s}{revisao && x.pend && <> <span class="pend">[PENDENTE: confirmar]</span></>}</small></span>
+            <span class="ic-wa" aria-hidden="true"><svg><use href="#i-wa" /></svg></span>
+          </a>
+        ))}
+      </div>
+      <p class="final-nota">Cada opção abre o WhatsApp do Fabricio com a mensagem escrita. Você revisa e envia.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final .grade { row-gap: 44px; }
+  .final-esq, .final-dir { grid-column: 1 / -1; min-width: 0; }
+  .final .rotulo { margin-bottom: 14px; }
+  .final-tit { font-size: clamp(2.6rem, 1.15rem + 6vw, 7rem); letter-spacing: -.04em; max-width: 11ch; }
+  .final .lead { margin-top: 22px; }
+  .final-num { margin-top: 26px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+  .final-num span { font: 700 var(--t-rotulo)/1 var(--f-display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; color: var(--nevoa); }
+  .final-num b { font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.2rem); font-weight: 800; letter-spacing: -.01em; user-select: all; }
+  @media (min-width: 1024px) { .final-esq { grid-column: 1 / 7; } .final-dir { grid-column: 7 / -1; align-self: end; } }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; border: 0; margin: 0 0 28px; padding: 0; }
+  legend { font: 700 var(--t-rotulo)/1.2 var(--f-display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; color: var(--nevoa); margin-bottom: 12px; padding: 0; }
+  .chip-op { position: relative; }
+  .chip-op input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip-op span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--grafite); font-weight: 500; font-size: .9375rem; transition: background .25s, box-shadow .25s, color .25s; }
+  .chip-op input:hover + span { box-shadow: inset 0 0 0 1.5px var(--nevoa); }
+  .chip-op input:checked + span { background: var(--verde); box-shadow: none; color: var(--branco); }
+  .chip-op input:focus-visible + span { outline: 3px solid var(--branco); outline-offset: 3px; }
+  .intencoes { border-top: 1px solid var(--grafite); }
+  .intencao { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 78px; padding: 16px 4px; border-bottom: 1px solid var(--grafite); text-decoration: none; position: relative; isolation: isolate; transition: padding .45s var(--e-saida); }
+  .intencao::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--verde); transform: scaleY(0); transform-origin: bottom; transition: transform .45s var(--e-saida); }
+  .intencao:hover::before, .intencao:focus-visible::before { transform: scaleY(1); }
+  .intencao:hover, .intencao:focus-visible { padding-inline: 18px; }
+  .intencao b { display: block; font: 700 clamp(1.12rem, 1rem + .65vw, 1.55rem)/1.2 var(--f-display); letter-spacing: -.01em; }
+  .intencao small { display: block; margin-top: 4px; color: var(--nevoa); font-size: .875rem; }
+  .intencao:hover small, .intencao:focus-visible small { color: var(--branco); }
+  .ic-wa { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--verde); display: grid; place-items: center; transition: background .3s; }
+  .intencao:hover .ic-wa { background: var(--preto); }
+  .ic-wa svg { width: 21px; height: 21px; }
+  .final-nota { margin-top: 18px; color: var(--nevoa); font-size: var(--t-peq); }
+</style>

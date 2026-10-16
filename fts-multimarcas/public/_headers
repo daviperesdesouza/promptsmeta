@@ -1,0 +1,5 @@
+# Netlify / Cloudflare Pages: arquivos com hash no nome podem ficar no cache por 1 ano.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+/videos/*
+  Cache-Control: public, max-age=604800

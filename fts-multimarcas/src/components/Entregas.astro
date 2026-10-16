@@ -1,0 +1,118 @@
+---
+import { getImage } from 'astro:assets';
+import Galeria from './Galeria.tsx';
+import type { FotoEntrega } from './Galeria.tsx';
+import { CONFIG, foto, revisao } from '../lib/conteudo';
+
+// Cada foto sai em AVIF e WebP em 3 larguras para o carrossel, e em WebP grande para a tela cheia.
+const fotos: FotoEntrega[] = await Promise.all(CONFIG.entregas.map(async (e, i) => {
+  const img = foto(e.foto);
+  const larguras = e.formato === 'h' ? [600, 900, 1200] : [380, 560, 760];
+  const [avif, webp, fallback, grande] = await Promise.all([
+    getImage({ src: img, widths: larguras, format: 'avif', quality: 58 }),
+    getImage({ src: img, widths: larguras, format: 'webp', quality: 72 }),
+    getImage({ src: img, width: larguras[1], format: 'webp', quality: 72 }),
+    getImage({ src: img, width: e.formato === 'h' ? 1600 : 1200, format: 'webp', quality: 78 }),
+  ]);
+  return {
+    id: `${e.foto}-${i}`, cliente: e.cliente, cidade: e.cidade, carro: e.carro, tipo: e.tipo, hibrido: !!e.hibrido, marca: e.marca,
+    alt: e.alt, formato: e.formato, w: img.width, h: img.height,
+    avif: avif.srcSet.attribute, webp: webp.srcSet.attribute, src: fallback.src,
+    grande: { src: grande.src, w: Number(grande.attributes.width), h: Number(grande.attributes.height) },
+  };
+}));
+const videos = CONFIG.videos;
+const destaque = videos.findIndex(v => v.formato === 'h');
+---
+<section class="secao escuro entregas" id="entregas" aria-labelledby="t-entregas">
+  <div class="wrap">
+    <div class="ent-topo">
+      <div>
+        <p class="rotulo rv">Entregas reais</p>
+        <h2 id="t-entregas" class="h2 tit">Mais de 1.200 chaves entregues.</h2>
+      </div>
+      <p class="lead rv" style="--rd:.1s">Clientes de verdade, carros de verdade. Filtre pelo tipo de carro e toque numa foto para ver em tela cheia.</p>
+    </div>
+    {revisao && !CONFIG.autorizacaoClientesConfirmada && <p class="ent-pend"><span class="pend">[PENDENTE: confirmar a autorização dos clientes que aparecem nas fotos]</span></p>}
+    <Galeria client:visible fotos={fotos} />
+
+    {videos.length > 0 && (
+      <div class="videos" data-videos>
+        <div class="videos-topo">
+          <p class="rotulo rv">Na hora da entrega</p>
+          <h3 class="videos-tit tit">Veja como é receber o carro.</h3>
+          {revisao && !CONFIG.videosConferidos && <p><span class="pend">[PENDENTE: conferir o áudio e a autorização de quem aparece nos vídeos]</span></p>}
+        </div>
+        <div class="videos-grade">
+          {[destaque, ...videos.map((_, i) => i).filter(i => i !== destaque)].filter(i => i >= 0).map((i, k) => {
+            const v = videos[i];
+            return (
+              <figure class:list={['vcard', 'rv', { 'vcard--h': v.formato === 'h' }]} style={`--rd:${k * 0.08}s`}>
+                <div class="vcard-midia">
+                  <button type="button" class="vcard-play" data-video={v.arquivo} aria-label={`Assistir: ${v.titulo}, ${v.legenda}, ${v.carro}, duração ${v.duracao}`}>
+                    <img src={`videos/${v.arquivo}.webp`} alt="" loading="lazy" decoding="async" width={v.formato === 'h' ? 854 : 480} height={v.formato === 'h' ? 480 : 854}>
+                    <span class="vcard-ic" aria-hidden="true"><svg><use href="#i-play" /></svg></span>
+                    <span class="vcard-dur">{v.duracao}</span>
+                  </button>
+                </div>
+                <figcaption><b>{v.titulo}</b><span>{v.legenda} · {v.carro}</span></figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .ent-topo { display: grid; gap: 18px; margin-bottom: clamp(28px, 4vw, 48px); }
+  .ent-topo .rotulo { margin-bottom: 14px; }
+  @media (min-width: 900px) { .ent-topo { grid-template-columns: 1.25fr .75fr; align-items: end; } }
+  .ent-pend { margin-bottom: 20px; }
+
+  .videos { margin-top: clamp(72px, 9vw, 128px); padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid var(--grafite); }
+  .videos-topo { margin-bottom: clamp(24px, 3vw, 36px); display: grid; gap: 12px; }
+  .videos-tit { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem); }
+  .videos-grade { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .vcard { margin: 0; min-width: 0; }
+  .vcard--h { grid-column: 1 / -1; }
+  .vcard-midia { position: relative; aspect-ratio: 9 / 16; border-radius: var(--r-card); overflow: hidden; background: #000; }
+  .vcard--h .vcard-midia { aspect-ratio: 16 / 9; }
+  .vcard-midia :global(video), .vcard-play img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .vcard-midia :global(video) { object-fit: contain; background: #000; }
+  .vcard-play { all: unset; position: absolute; inset: 0; cursor: pointer; display: block; }
+  .vcard-play::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.55)); }
+  .vcard-play:focus-visible { outline: 3px solid var(--branco); outline-offset: -3px; }
+  .vcard-ic { position: absolute; z-index: 2; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: var(--verde); display: grid; place-items: center; box-shadow: 0 10px 30px -8px rgba(0,0,0,.6); transition: transform .35s var(--e-mola); }
+  .vcard-ic svg { width: 24px; height: 24px; margin-left: 3px; color: #fff; }
+  .vcard-play:hover .vcard-ic { transform: scale(1.08); }
+  .vcard-dur { position: absolute; z-index: 2; right: 10px; bottom: 10px; font: 600 .75rem/1 var(--f-texto); color: #fff; background: rgba(0,0,0,.6); padding: 5px 8px; border-radius: 6px; }
+  .vcard figcaption { margin-top: 10px; font-size: .875rem; line-height: 1.35; color: var(--nevoa); }
+  .vcard figcaption b { display: block; color: var(--branco); font-weight: 600; }
+  @media (max-width: 559px) { .vcard:not(.vcard--h) .vcard-ic { width: 48px; height: 48px; margin: -24px 0 0 -24px; } .vcard figcaption span { display: none; } }
+  @media (min-width: 900px) {
+    .videos-grade { grid-template-columns: 2.25fr repeat(3, 1fr); gap: 12px; align-items: start; }
+    .vcard--h { grid-column: auto; }
+    .vcard-midia, .vcard--h .vcard-midia { aspect-ratio: auto; height: clamp(340px, 30vw, 440px); }
+  }
+</style>
+
+<script>
+  // Vídeos: só baixam quando a pessoa aperta o play; um toca por vez.
+  const area = document.querySelector('[data-videos]');
+  area?.addEventListener('click', ev => {
+    const b = (ev.target as Element).closest<HTMLButtonElement>('[data-video]');
+    if (!b) return;
+    const nome = b.dataset.video!;
+    area.querySelectorAll('video').forEach(v => v.pause());
+    const v = document.createElement('video');
+    Object.assign(v, { controls: true, playsInline: true, preload: 'auto', poster: `videos/${nome}.webp` });
+    v.setAttribute('aria-label', b.getAttribute('aria-label')!.replace('Assistir: ', '').replace(/, duração .*$/, ''));
+    v.innerHTML = `<source src="videos/${nome}.mp4" type="video/mp4"><source src="videos/${nome}.webm" type="video/webm">`;
+    v.addEventListener('play', () => area.querySelectorAll('video').forEach(x => x !== v && x.pause()));
+    b.replaceWith(v);
+    v.play().catch(() => {});
+    v.focus();
+  });
+</script>

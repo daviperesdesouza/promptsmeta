@@ -1,0 +1,170 @@
+/* =========================================================================
+   FTS Multimarcas 0km — sistema visual "Entrega em mãos"
+   Conceito: o site é o dia da entrega. Piso claro de showroom, asfalto
+   escuro nas seções de prova, verde só para ação e para a rota.
+   O vermelho entra apenas pelas fotos reais (o laço nos carros entregues).
+   ========================================================================= */
+:root {
+  /* Identidade fixa */
+  --verde: #048437;          /* ação, rota */
+  --preto: #101010;
+  --branco: #ffffff;
+  /* Derivados do verde */
+  --verde-600: #036c2d;      /* hover; verde em texto pequeno sobre claro (5,97:1) */
+  --verde-400: #3fb26a;      /* verde sobre escuro (7,06:1) */
+  --verde-100: #dcefe3;
+  --verde-050: #eef6f0;
+  /* Neutros claros (leve viés verde, nunca cinza puro) */
+  --piso: #f3f4f0;           /* fundo: piso de showroom */
+  --piso-2: #e8eae4;
+  --linha: #d6d9d1;
+  --tinta: #101010;
+  --tinta-2: #4a504b;        /* 7,48:1 sobre piso */
+  --tinta-3: #677068;        /* 4,64:1 sobre piso (só sobre piso/branco) */
+  /* Neutros escuros (asfalto) */
+  --asfalto: #101010;
+  --asfalto-2: #1b1d1b;
+  --grafite: #2c2f2c;
+  --nevoa: #a9afa9;          /* texto secundário sobre escuro (8,5:1) */
+  --pend-bg: #ffe58a;
+
+  /* Tipografia */
+  --f-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', system-ui, sans-serif;
+  --f-texto: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --t-hero: clamp(2.55rem, 1.05rem + 5.35vw, 5.9rem);
+  --t-h2: clamp(2.05rem, 1.2rem + 3.3vw, 4.25rem);
+  --t-h3: clamp(1.28rem, 1.05rem + .9vw, 1.75rem);
+  --t-lead: clamp(1.0625rem, .98rem + .42vw, 1.32rem);
+  --t-corpo: 1.0625rem;
+  --t-peq: .9375rem;
+  --t-rotulo: .72rem;
+
+  /* Espaço e grade */
+  --gutter: clamp(16px, 4vw, 56px);
+  --gap: clamp(12px, 1.8vw, 24px);
+  --secao: clamp(76px, 9vw, 136px);
+  --max: 1360px;
+  --header-h: 64px;
+
+  /* Forma */
+  --r-foto: 22px;
+  --r-card: 16px;
+  --r-peq: 10px;
+  --sombra-flutua: 0 18px 40px -22px rgba(16, 16, 16, .45), 0 2px 6px rgba(16, 16, 16, .06);
+
+  /* Movimento */
+  --e-saida: cubic-bezier(.2, .8, .2, 1);
+  --e-meio: cubic-bezier(.65, 0, .35, 1);
+  --e-mola: cubic-bezier(.34, 1.4, .64, 1);
+  --d-rapida: .25s;
+  --d-media: .6s;
+  --d-lenta: .95s;
+
+  /* O site define as próprias cores; evita o "modo escuro automático" do navegador. */
+  color-scheme: light dark;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--header-h) + 16px); }
+@media (prefers-reduced-motion: no-preference) { html:not(.lenis) { scroll-behavior: smooth; } }
+body {
+  margin: 0;
+  background: var(--piso);
+  color: var(--tinta);
+  font: 400 var(--t-corpo)/1.6 var(--f-texto);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, video, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+h1, h2, h3, h4 { font-family: var(--f-display); font-weight: 800; line-height: .98; letter-spacing: -.028em; margin: 0; text-wrap: balance; }
+p { margin: 0; text-wrap: pretty; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--verde); outline-offset: 3px; border-radius: 6px; }
+.escuro :focus-visible, .verdao :focus-visible { outline-color: var(--branco); }
+::selection { background: var(--verde); color: var(--branco); }
+
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pular { position: fixed; left: 12px; top: -80px; z-index: 300; background: var(--preto); color: var(--branco); padding: 12px 16px; border-radius: 10px; text-decoration: none; font-weight: 600; }
+.pular:focus { top: 12px; }
+
+/* ---------- Grade ---------- */
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: var(--gutter); }
+.grade { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+.secao { padding-block: var(--secao); }
+.escuro { background: var(--asfalto); color: var(--branco); position: relative; isolation: isolate; }
+/* Textura de asfalto: ruído sutil, só nas seções escuras. */
+.escuro::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Tipografia utilitária ---------- */
+.rotulo {
+  display: inline-flex; align-items: center; gap: 12px;
+  font: 700 var(--t-rotulo)/1.2 var(--f-display); font-stretch: 125%;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--tinta-2);
+}
+.rotulo::before { content: ""; width: 26px; height: 2px; background: var(--verde); border-radius: 2px; flex: none; }
+.escuro .rotulo { color: var(--nevoa); }
+.escuro .rotulo::before { background: var(--verde-400); }
+.h2 { font-size: var(--t-h2); }
+.lead { font-size: var(--t-lead); line-height: 1.5; color: var(--tinta-2); max-width: 40ch; }
+.escuro .lead { color: var(--nevoa); }
+.num { font-family: var(--f-display); font-stretch: 125%; font-variant-numeric: tabular-nums lining-nums; }
+.verde-tx { color: var(--verde); }
+.escuro .verde-tx { color: var(--verde-400); }
+
+/* ---------- Botões ---------- */
+.btn {
+  --bg: var(--verde); --tx: var(--branco); --bg-hover: var(--verde-600);
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 56px; padding: 0 26px 0 20px; border-radius: 999px; border: 0; cursor: pointer;
+  background: var(--bg); color: var(--tx); text-decoration: none;
+  font: 600 1rem/1.2 var(--f-texto); letter-spacing: .005em;
+  overflow: hidden; isolation: isolate; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .08), 0 12px 26px -14px rgba(4, 132, 55, .75);
+  transition: transform var(--d-rapida) var(--e-saida), box-shadow var(--d-rapida) var(--e-saida);
+}
+.btn::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--bg-hover); transform: translateY(101%); transition: transform .45s var(--e-saida); }
+.btn:hover::before { transform: none; }
+.btn:active { transform: scale(.97); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+.btn .seta { width: 18px; height: 18px; transition: transform .35s var(--e-saida); }
+.btn:hover .seta { transform: translateX(4px); }
+.btn--claro { --bg: var(--branco); --tx: var(--preto); --bg-hover: var(--preto); box-shadow: none; }
+.btn--claro:hover { color: var(--branco); }
+.btn--escuro { --bg: var(--preto); --bg-hover: #2a2c2a; box-shadow: none; }
+.link-seta { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; text-decoration: none; border-bottom: 1.5px solid currentColor; padding-top: 2px; transition: color var(--d-rapida); }
+.link-seta:hover { color: var(--verde-600); }
+.escuro .link-seta:hover { color: var(--verde-400); }
+
+/* ---------- Pendências (só existem no HTML quando modoRevisao = true) ---------- */
+.pend {
+  display: inline-block; font: 600 .75rem/1.35 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0; text-transform: none;
+  background: var(--pend-bg); color: var(--preto); padding: 3px 7px; border-radius: 5px; vertical-align: middle; font-stretch: 100%;
+}
+
+/* ---------- Movimento ----------
+   Estados iniciais só existem quando o JS liga a classe .mov (com movimento)
+   ou .mov.reduz (só fades). Sem JS, tudo aparece de cara. */
+.mov .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--e-saida), transform .9s var(--e-saida); transition-delay: var(--rd, 0s); }
+.mov .rv.dentro { opacity: 1; transform: none; }
+.mov .tit .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .1em; margin-bottom: -.1em; }
+.mov .tit .wi { display: inline-block; transform: translateY(112%); transition: transform .85s var(--e-saida); }
+.mov .tit.dentro .wi { transform: none; }
+/* Título do topo: palavras separadas no build e animação em CSS, desde a primeira pintura. */
+.mov .tit--abertura .wi { transform: none; animation: palavra-sobe .9s var(--e-saida) both; animation-delay: calc(.06s + var(--k, 0) * .045s); }
+@keyframes palavra-sobe { from { transform: translateY(112%); } }
+.mov .rv-foto { clip-path: inset(0 0 100% 0 round var(--r-foto)); transition: clip-path 1.05s var(--e-meio); transition-delay: var(--rd, 0s); }
+.mov .rv-foto.dentro { clip-path: inset(0 0 0 0 round var(--r-foto)); }
+@media (max-width: 767px) { .mov .rv { transform: translateY(14px); } }
+/* Reduzir movimento: só fades, nada se desloca. */
+.mov.reduz .rv, .mov.reduz .tit .wi { transform: none !important; }
+.mov.reduz .tit .wi { opacity: 0; transition: opacity .7s ease; }
+.mov.reduz .tit.dentro .wi, .mov.reduz .tit--abertura .wi { opacity: 1; animation: none; }
+.mov.reduz .rv-foto { clip-path: none !important; opacity: 0; transition: opacity .8s ease; }
+.mov.reduz .rv-foto.dentro { opacity: 1; }

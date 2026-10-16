@@ -1,0 +1,50 @@
+---
+import { CONFIG, TEXTOS } from '../lib/conteudo';
+const passos = TEXTOS.passos.map((p, i) => ({ ...p, texto: i === 1 ? CONFIG.comoFunciona : p.texto }));
+---
+<section class="secao rota" id="como-funciona" aria-labelledby="t-como">
+  <div class="wrap">
+    <div class="rota-topo">
+      <div>
+        <p class="rotulo rv">Como funciona</p>
+        <h2 id="t-como" class="h2 tit">Do “oi” à chave na mão.</h2>
+      </div>
+      <p class="lead rv" style="--rd:.1s">Você só conversa comigo. O resto do caminho é trabalho meu.</p>
+    </div>
+    <!-- A rota: uma linha única com quatro paradas, desenhada pela rolagem. -->
+    <ol class="paradas" data-rota>
+      {passos.map((p, i) => (
+        <li class="parada rv" style={`--rd:${i * 0.08}s`}>
+          <span class="marco num" aria-hidden="true">{i + 1}</span>
+          <h3>{p.titulo}</h3>
+          <p>{p.texto}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .rota-topo { display: grid; gap: 18px; margin-bottom: clamp(40px, 5vw, 76px); }
+  .rota-topo .rotulo { margin-bottom: 14px; }
+  @media (min-width: 900px) { .rota-topo { grid-template-columns: 1.2fr .8fr; align-items: end; } .rota-topo .lead { justify-self: end; } }
+  .paradas { position: relative; isolation: isolate; display: grid; gap: 34px; padding-left: 64px; }
+  /* Estrada: faixa com tracejado branco; a parte verde avança com a rolagem (--p). */
+  .paradas::before, .paradas::after { content: ""; position: absolute; z-index: -1; left: 19px; top: 8px; bottom: 8px; width: 6px; border-radius: 6px;
+    background: repeating-linear-gradient(180deg, rgba(255,255,255,.95) 0 10px, transparent 10px 22px) center / 2px 100% no-repeat, var(--piso-2); }
+  /* Recorte em vez de escala: o tracejado não deforma enquanto a linha verde avança. */
+  .paradas::after { background-color: var(--verde); clip-path: inset(0 0 calc((1 - var(--p, 1)) * 100%) 0); }
+  .parada { position: relative; }
+  .marco { position: absolute; left: -64px; top: -6px; width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: var(--branco); color: var(--verde-600); font-weight: 800; font-size: 1.15rem; box-shadow: inset 0 0 0 2px var(--verde), 0 10px 20px -14px rgba(16,16,16,.5); transition: background .4s, color .4s; }
+  :global(.parada.chegou) .marco, .parada:first-child .marco { background: var(--verde); color: var(--branco); }
+  h3 { font-size: var(--t-h3); letter-spacing: -.015em; line-height: 1.1; padding-top: 6px; }
+  .parada p { margin-top: 10px; color: var(--tinta-2); max-width: 34ch; }
+  @media (min-width: 900px) {
+    .paradas { grid-template-columns: repeat(4, 1fr); gap: var(--gap); padding-left: 0; padding-top: 80px; }
+    .paradas::before, .paradas::after { left: 25px; right: calc(25% - 25px); top: 22px; bottom: auto; width: auto; height: 6px;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,.95) 0 12px, transparent 12px 26px) center / 100% 2px no-repeat, var(--piso-2); }
+    .paradas::after { clip-path: inset(0 calc((1 - var(--p, 1)) * 100%) 0 0); }
+    .marco { left: 0; top: -80px; }
+    h3 { padding-top: 0; }
+  }
+</style>

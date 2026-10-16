@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import Icones from '../components/Icones.astro';
+import Cabecalho from '../components/Cabecalho.astro';
+import Hero from '../components/Hero.astro';
+import Numeros from '../components/Numeros.astro';
+import Categorias from '../components/Categorias.astro';
+import Assinatura from '../components/Assinatura.astro';
+import ComoFunciona from '../components/ComoFunciona.astro';
+import Entregas from '../components/Entregas.astro';
+import QuemSou from '../components/QuemSou.astro';
+import Marcas from '../components/Marcas.astro';
+import Empresas from '../components/Empresas.astro';
+import Duvidas from '../components/Duvidas.astro';
+import Fechamento from '../components/Fechamento.astro';
+import Rodape from '../components/Rodape.astro';
+---
+<Base>
+  <Icones />
+  <Cabecalho />
+  <main id="conteudo">
+    <Hero />
+    <Numeros />
+    <Categorias />
+    <Assinatura />
+    <ComoFunciona />
+    <Entregas />
+    <QuemSou />
+    <Marcas />
+    <Empresas />
+    <Duvidas />
+    <Fechamento />
+  </main>
+  <Rodape />
+  <script>
+    import '../scripts/site';
+  </script>
+</Base>

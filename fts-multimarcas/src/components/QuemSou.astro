@@ -1,0 +1,78 @@
+---
+import { Picture } from 'astro:assets';
+import { CONFIG, wa, foto, revisao } from '../lib/conteudo';
+const n = (cond: (x: typeof CONFIG.numeros[number]) => boolean) => CONFIG.numeros.find(x => x.confirmado && cond(x));
+const anos = n(x => x.unidade === 'anos' && x.rotulo === 'de atuação');
+const carros = n(x => !!x.destaque);
+// Ficha técnica: só fatos confirmados.
+const ficha = [
+  anos && ['Atuação', `+${anos.valor} anos`],
+  carros && ['Carros entregues', `+${carros.valor.toLocaleString('pt-BR')}`],
+  ['Marcas', '14, de 0 km'],
+  ['Atendimento', 'Vai até você'],
+  ['Base', 'Aracruz-ES'],
+  ['Empresa', `CNPJ ativo desde ${CONFIG.empresa.desde}`],
+].filter(Boolean) as [string, string][];
+---
+<section class="secao quem" id="fabricio" aria-labelledby="t-quem">
+  <div class="wrap grade">
+    <figure class="quem-foto">
+      <div class="quem-img rv-foto">
+        <Picture src={foto(CONFIG.fotos.acao.src)} alt={CONFIG.fotos.acao.alt} widths={[560, 900, 1300]} sizes="(min-width: 1024px) 46vw, 100vw" formats={['avif', 'webp']} quality={68} loading="lazy" />
+      </div>
+      <figcaption>Entrega da Strada do Joacir, em Aracruz.</figcaption>
+    </figure>
+    <div class="quem-texto">
+      <p class="rotulo rv">Quem cuida da sua compra</p>
+      <h2 id="t-quem" class="h2 tit">Prazer, Fabricio Teixeira.</h2>
+      {CONFIG.frase
+        ? <blockquote class="quem-frase rv">“{CONFIG.frase}”</blockquote>
+        : revisao && <p class="quem-frase-vaga rv"><span class="pend">[PENDENTE: a frase de efeito do Fabricio, com as palavras dele]</span></p>}
+      <div class="quem-corpo rv">
+        <p>Sou consultor de carros 0 km de 14 marcas, aqui em Aracruz, há mais de 20 anos. Também trabalho com alguns seminovos.</p>
+        <p>Em vez de você conversar com um vendedor por concessionária, conversa comigo. Eu encontro, comparo e cuido de tudo até o carro chegar.</p>
+        {CONFIG.bio ? <p>{CONFIG.bio}</p> : revisao && <p><span class="pend">[PENDENTE: 2–3 frases do Fabricio sobre a própria história]</span></p>}
+      </div>
+      <div class="ficha rv">
+        <p class="ficha-tit">Ficha técnica</p>
+        <dl>
+          {ficha.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+      </div>
+      <div class="quem-acoes rv">
+        <a class="btn btn--escuro" data-wa="encontrar" data-cta href={wa('encontrar')} target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa" /></svg>Falar com o Fabricio</a>
+        <a class="link-seta" href={`https://www.instagram.com/${CONFIG.instagram}/`} target="_blank" rel="noopener"><svg aria-hidden="true" width="18" height="18"><use href="#i-insta" /></svg>@{CONFIG.instagram}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quem .grade { row-gap: 36px; align-items: start; }
+  .quem-foto { grid-column: 1 / -1; margin: 0; }
+  .quem-foto :global(picture), .quem-foto :global(img) { display: block; width: 100%; }
+  .quem-foto :global(img) { aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-foto); height: auto; }
+  .quem-foto figcaption { margin-top: 10px; font-size: .8125rem; color: var(--tinta-2); }
+  .quem-texto { grid-column: 1 / -1; }
+  .quem-texto .rotulo { margin-bottom: 14px; }
+  .quem-frase { margin: 22px 0 0; font: 700 clamp(1.3rem, 1.05rem + 1vw, 1.8rem)/1.25 var(--f-display); letter-spacing: -.015em; padding-left: 18px; border-left: 3px solid var(--verde); max-width: 30ch; }
+  .quem-frase-vaga { margin-top: 18px; }
+  .quem-corpo { margin-top: 20px; display: grid; gap: 14px; font-size: var(--t-lead); line-height: 1.5; max-width: 42ch; }
+  .quem-corpo p { color: var(--tinta-2); }
+  .quem-corpo p:first-child { color: var(--preto); }
+  /* Ficha técnica no formato de folheto de carro: rótulo · pontilhado · valor */
+  .ficha { margin-top: 28px; max-width: 520px; }
+  .ficha-tit { font: 700 var(--t-rotulo)/1 var(--f-display); font-stretch: 125%; letter-spacing: .16em; text-transform: uppercase; color: var(--verde-600); padding-bottom: 10px; border-bottom: 2px solid var(--preto); }
+  .ficha dl { margin: 0; }
+  .ficha div { display: flex; align-items: baseline; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--linha); }
+  .ficha dt { color: var(--tinta-2); font-size: var(--t-peq); white-space: nowrap; }
+  .ficha div::after { content: ""; order: 1; flex: 1; border-bottom: 1.5px dotted var(--linha); transform: translateY(-4px); min-width: 16px; }
+  .ficha dd { order: 2; margin: 0; font: 700 1rem/1.2 var(--f-display); font-stretch: 108%; text-align: right; }
+  .quem-acoes { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 14px 24px; align-items: center; }
+  .quem-acoes .link-seta svg { width: 18px; height: 18px; }
+  @media (min-width: 1024px) {
+    /* A foto acompanha a leitura do texto, que é mais comprido. */
+    .quem-foto { grid-column: 1 / 7; position: sticky; top: calc(var(--header-h) + 36px); }
+    .quem-texto { grid-column: 8 / -1; }
+  }
+</style>
