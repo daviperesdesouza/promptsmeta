@@ -112,6 +112,10 @@ const imagens = await Promise.all(cards.map(async c => {
   .cat--empresas .cat-seta { background: var(--branco); color: var(--preto); }
   .cat--empresas:hover .cat-seta { background: var(--preto); color: var(--branco); }
   .cat .pend { position: absolute; top: 14px; left: 14px; }
+  @media (prefers-reduced-motion: reduce) {
+    .cat, .cat :global(.cat-img), .cat-seta, .cat--tipo::after { transition: none; }
+    .cat--foto:hover :global(.cat-img), .cat--foto:focus-visible :global(.cat-img) { transform: none; }
+  }
   .cats-dica { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--tinta-2); }
 
   @media (min-width: 640px) {

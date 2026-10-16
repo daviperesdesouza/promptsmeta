@@ -29,6 +29,9 @@ function arco(cx: number, cy: number, rx: number, ry: number, a0: number, a1: nu
 export function iniciarAssinatura() {
   const cv = document.querySelector<HTMLElement>('[data-assinatura]');
   if (!cv || reduz) return;
+  // Tela baixa demais: fica a versão parada. Decide já, sem medir nada, para a seção não mudar de altura depois.
+  if (innerHeight < (innerWidth < 900 ? 640 : 520)) return;
+  cv.classList.add('cv--vivo');
   iniciarRolagem();
 
   const quadro = cv.querySelector<HTMLElement>('.cv-quadro')!;
@@ -152,29 +155,37 @@ export function iniciarAssinatura() {
     if (f !== fase) { fase = f; fases.forEach((el, i) => el.classList.toggle('ativa', i === f)); }
   }
 
-  let vivo = monta();
-  if (!vivo) cv.classList.remove('cv--vivo', 'cv--compacto');
-  render(vivo ? 0 : 1);
-  // Do topo da seção no topo da tela até o fim dela no pé da tela.
-  const c = cena(() => entre(cv, 0, 1), p => { if (vivo) render(p); }, 0.14);
-  c.ligar(vivo);
+  const liga = () => {
+    let vivo = monta();
+    if (!vivo) cv.classList.remove('cv--vivo', 'cv--compacto');
+    render(vivo ? 0 : 1);
+    // Do topo da seção no topo da tela até o fim dela no pé da tela.
+    const c = cena(() => entre(cv, 0, 1), p => { if (vivo) render(p); }, 0.14);
+    c.ligar(vivo);
 
-  // Os logos entram quando o palco aparece na tela.
-  new IntersectionObserver((es, o) => es.forEach(e => {
-    if (e.isIntersecting) { cv.classList.add('cv--entrou'); o.disconnect(); }
-  }), { threshold: 0.2 }).observe(cv.querySelector('.cv-palco')!);
+    // Os logos entram quando o palco aparece na tela.
+    new IntersectionObserver((es, o) => es.forEach(e => {
+      if (e.isIntersecting) { cv.classList.add('cv--entrou'); o.disconnect(); }
+    }), { threshold: 0.2 }).observe(cv.querySelector('.cv-palco')!);
 
-  let t: number, larg = innerWidth;
-  const refaz = () => {
-    const ok = monta();
-    if (!ok) cv.classList.remove('cv--vivo', 'cv--compacto');
-    if (ok !== vivo) { vivo = ok; c.ligar(ok); }
-    render(vivo ? c.p : 1);
+    let t: number, larg = innerWidth;
+    const refaz = () => {
+      const ok = monta();
+      if (!ok) cv.classList.remove('cv--vivo', 'cv--compacto');
+      if (ok !== vivo) { vivo = ok; c.ligar(ok); }
+      render(vivo ? c.p : 1);
+    };
+    addEventListener('resize', () => {
+      // No celular, a barra do navegador muda a altura ao rolar: só refaz quando a largura muda.
+      if (innerWidth === larg && matchMedia('(pointer: coarse)').matches) return;
+      larg = innerWidth; clearTimeout(t); t = window.setTimeout(refaz, 120);
+    });
+    document.fonts?.ready.then(refaz);
   };
-  addEventListener('resize', () => {
-    // No celular, a barra do navegador muda a altura ao rolar: só refaz quando a largura muda.
-    if (innerWidth === larg && matchMedia('(pointer: coarse)').matches) return;
-    larg = innerWidth; clearTimeout(t); t = window.setTimeout(refaz, 120);
-  });
-  document.fonts?.ready.then(refaz);
+
+  // A montagem mede a página; só roda quando a seção se aproxima da tela (não pesa no carregamento).
+  new IntersectionObserver((es, o) => {
+    if (!es.some(e => e.isIntersecting)) return;
+    o.disconnect(); liga();
+  }, { rootMargin: '150% 0px' }).observe(cv);
 }
