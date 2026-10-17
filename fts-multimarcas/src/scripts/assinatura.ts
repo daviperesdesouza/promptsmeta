@@ -30,7 +30,7 @@ export function iniciarAssinatura() {
   const cv = document.querySelector<HTMLElement>('[data-assinatura]');
   if (!cv || reduz) return;
   // Tela baixa demais: fica a versão parada. Decide já, sem medir nada, para a seção não mudar de altura depois.
-  if (innerHeight < (innerWidth < 900 ? 640 : 520)) return;
+  if (innerHeight < (innerWidth < 900 ? 560 : 520)) return;
   cv.classList.add('cv--vivo');
   iniciarRolagem();
 
@@ -47,7 +47,7 @@ export function iniciarAssinatura() {
   /** Calcula o desenho para o tamanho atual. Devolve false se não couber (fica o estado parado). */
   function monta(): boolean {
     cv!.classList.add('cv--vivo');
-    cv!.classList.remove('cv--compacto');
+    cv!.classList.remove('cv--compacto', 'cv--minimo');
     const W = quadro.clientWidth, H = quadro.clientHeight;
     if (H < 520) return false;
     const g = parseFloat(getComputedStyle(quadro).paddingLeft) || 16;
@@ -85,14 +85,22 @@ export function iniciarAssinatura() {
       ax = textos.offsetLeft; ay = textos.offsetTop + textos.offsetHeight / 2 + 26;
     } else {
       // Celular: duas colunas; as rotas saem por dentro e descem num feixe central até o retrato.
-      const cd = Math.round(Math.min(116, Math.max(88, W * 0.26))); r = cd / 2;
+      // Em telas mais baixas (iPhone com as barras do Safari) o texto encolhe em dois degraus:
+      // sem o parágrafo; depois só o título, com retrato menor. Logos pequenos demais: versão parada.
+      let cd = 0, livre = 0, gT = 18, gN = 22, gA = 18;
+      const mede = () => {
+        const min = cv!.classList.contains('cv--minimo');
+        [gT, gN, gA] = min ? [12, 14, 12] : [18, 22, 18];
+        cd = min ? 76 : Math.round(Math.min(116, Math.max(88, W * 0.26)));
+        livre = H - gA - (textos.offsetTop + textos.offsetHeight + gT) - (cd + gA + (acao.offsetHeight || 56)) - gN;
+      };
+      mede();
+      if (livre / 7 < 46) { cv!.classList.add('cv--compacto'); mede(); }
+      if (livre / 7 < 44) { cv!.classList.add('cv--minimo'); mede(); }
+      if (livre / 7 < 36) return false;
+      r = cd / 2;
       no.style.setProperty('--cd', cd + 'px');
-      const acaoH = acao.offsetHeight || 56;
-      const espaco = () => H - 18 - (textos.offsetTop + textos.offsetHeight + 18) - (cd + 18 + acaoH) - 22;
-      let livre = espaco();
-      if (livre / 7 < 38) { cv!.classList.add('cv--compacto'); livre = espaco(); }
-      if (livre / 7 < 36) return false; // logos pequenos demais: melhor a versão parada
-      const topo0 = textos.offsetTop + textos.offsetHeight + 18;
+      const topo0 = textos.offsetTop + textos.offsetHeight + gT;
       const rowH = Math.min(56, livre / 7);
       ch = Math.round(Math.min(44, rowH - 8)); cw = Math.round(Math.min(156, (W - 2 * g - 48) / 2));
       const y0 = topo0 + (livre - 7 * rowH) * 0.4;
@@ -102,8 +110,8 @@ export function iniciarAssinatura() {
         caixas.push({ x, y, w: cw, h: ch });
         saidas.push({ x: dir ? x : x + cw, y: y + ch / 2, lado: dir ? 1 : -1 });
       });
-      cx = W / 2; cy = y0 + 7 * rowH + 22 + r;
-      ax = (W - acao.offsetWidth) / 2; ay = cy + r + 18;
+      cx = W / 2; cy = y0 + 7 * rowH + gN + r;
+      ax = (W - acao.offsetWidth) / 2; ay = cy + r + gA;
     }
 
     chips.forEach((c, i) => {
@@ -157,7 +165,7 @@ export function iniciarAssinatura() {
 
   const liga = () => {
     let vivo = monta();
-    if (!vivo) cv.classList.remove('cv--vivo', 'cv--compacto');
+    if (!vivo) cv.classList.remove('cv--vivo', 'cv--compacto', 'cv--minimo');
     render(vivo ? 0 : 1);
     // Do topo da seção no topo da tela até o fim dela no pé da tela.
     const c = cena(() => entre(cv, 0, 1), p => { if (vivo) render(p); }, 0.14);
@@ -171,7 +179,7 @@ export function iniciarAssinatura() {
     let t: number, larg = innerWidth;
     const refaz = () => {
       const ok = monta();
-      if (!ok) cv.classList.remove('cv--vivo', 'cv--compacto');
+      if (!ok) cv.classList.remove('cv--vivo', 'cv--compacto', 'cv--minimo');
       if (ok !== vivo) { vivo = ok; c.ligar(ok); }
       render(vivo ? c.p : 1);
     };

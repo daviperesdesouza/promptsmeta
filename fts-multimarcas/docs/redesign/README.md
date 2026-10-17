@@ -69,9 +69,9 @@ O verde #048437 sobre o piso (4,36:1) só aparece em títulos grandes (AA para t
 | Micro-animações da galeria | **CSS + Web Animations API** | Motion (framer-motion) | Também testado: 43 KB gz a mais na ilha para a pílula do filtro e a entrada das fotos. |
 | Rolagem suave | **Lenis 1.3**, só no desktop com mouse e carregado sob demanda (5,4 KB gz) | só nativa | Sensação mais macia no desktop sem mexer na rolagem por toque. Desligado com "reduzir movimento". |
 | Estilos | **CSS com tokens + estilos escopados do Astro** | Tailwind | Sistema pequeno e autoral, controle fino de fonte variável e `clip-path`, sem dependência. |
-| Fontes | **Fontsource**, auto-hospedadas, `font-display: swap` + preload da principal | Google Fonts | Na v1 as fontes do Google bloqueavam a renderização por ~2,1 s. |
+| Fontes | **Auto-hospedadas**, `font-display: swap` + preload da principal. A Archivo foi reduzida ao que o site usa (`tools/fonte-archivo.py`: pesos 600–800, larguras 86–125%, caracteres do português), de 90 KB para 50 KB. Fontes reserva com as mesmas medidas (calculadas com Capsize) | Google Fonts | Na v1 as fontes do Google bloqueavam a renderização por ~2,1 s. As fontes reserva evitam que o texto pule quando a fonte chega. |
 | Imagens | **astro:assets + sharp**: AVIF e WebP, `srcset`, recorte próprio no celular | arquivos prontos à mão | Uma foto-mestre por imagem; o build gera os tamanhos certos para cada tela. |
-| Testes | **Playwright + axe-core** (`npm run qa`) | — | 67 verificações automáticas a cada mudança. |
+| Testes | **Playwright + axe-core** (`npm run qa`) | — | 71 verificações automáticas a cada mudança. |
 
 Orçamentos do pedido: JS inicial ≤ 90 KB gz (resultado: **7 KB**); foto do topo ≤ 150 KB (resultado: **31 KB** no celular, 25–66 KB no desktop).
 
@@ -85,7 +85,7 @@ Orçamentos do pedido: JS inicial ≤ 90 KB gz (resultado: **7 KB**); foto do to
 | Títulos das seções | 12% dentro da tela | Máscara linha a linha | .85s, saída; 110 ms por linha | Igual | Fade |
 | Blocos | 12% dentro da tela | Sobem 26px com fade, escalonados | .8–.9s, saída | Sobem 14px | Fade |
 | Hodômetro | Entrar na tela | Cada dígito roda como um rolo; as casas da direita dão mais voltas | 1,9s, saída | Igual | Número final |
-| Assinatura 14 → 1 | Rolagem (palco preso por ~2 telas) | Logos entram juntos; as rotas se desenham com um ponto viajando; o retrato cresce; o botão aparece; o texto muda em 3 fases | Proporcional à rolagem, suavizada; logos .6s com mola | Duas colunas e feixe central (em telas baixas, versão parada) | Parada e completa |
+| Assinatura 14 → 1 | Rolagem (palco preso por ~2 telas) | Logos entram juntos; as rotas se desenham com um ponto viajando; o retrato cresce; o botão aparece; o texto muda em 3 fases | Proporcional à rolagem, suavizada; logos .6s com mola | Duas colunas e feixe central; em telas baixas o texto encolhe em dois degraus (abaixo de ~560px de altura, versão parada) | Parada e completa |
 | Estrada do "Como funciona" | Rolagem (78% → 55% da tela) | A faixa verde avança e as paradas acendem | Proporcional à rolagem | Vertical | Completa |
 | Cartões de categoria | Passar o mouse / foco | Foto aproxima 6%; a seta gira e fica verde; no sedã a faixa da estrada anda | 1,1s / .45s | Toque: escala .985 | Sem deslocamento |
 | Filtros da galeria | Clique | A pílula verde desliza até o filtro escolhido; as fotos entram escalonadas | .46s mola / .5s | Igual | Instantâneo |
@@ -113,23 +113,23 @@ Lighthouse 12 no modo celular (Moto G simulado, 4G lento, CPU 4×), servidor com
 
 | | v1 | v2 |
 |---|---|---|
-| Desempenho | 84 | **97** |
+| Desempenho | 84 | **99** |
 | Acessibilidade | 97 | **100** |
 | Boas práticas | 100 | 100 |
 | SEO | 100 | 100 |
-| Primeira pintura (FCP) | 3,2 s | **1,3 s** |
-| Maior pintura (LCP) | 3,2 s | **2,5 s** |
+| Primeira pintura (FCP) | 3,2 s | **1,1–1,3 s** |
+| Maior pintura (LCP) | 3,2 s | **2,0–2,2 s** |
 | Bloqueio total (TBT) | 0 ms | 0 ms |
-| Deslocamento de layout (CLS) | 0 | 0,002 |
-| Speed Index | 5,0 s | **1,4 s** |
-| Peso no carregamento | 242 KB | 316 KB |
+| Deslocamento de layout (CLS) | 0 | 0,001 |
+| Speed Index | 5,0 s | **1,3 s** |
+| Peso no carregamento | 242 KB | 277 KB |
 | JavaScript no carregamento | 13 KB gz (embutido) | **7 KB gz** |
 | JavaScript depois de chegar à galeria | 13 KB gz | ~98 KB gz (React + galeria, só quando ela se aproxima) |
-| Fontes | 124 KB, bloqueando a renderização | 118 KB, sem bloqueio |
+| Fontes | 124 KB, bloqueando a renderização | **78 KB**, sem bloqueio |
 | Imagens no carregamento | 84 KB | 158 KB (topo e fotos reais nos cartões, que antes eram só texto) |
 | Violações do axe | 1 séria (contraste) + 2 moderadas | **0** |
 
-No desktop (Lighthouse modo desktop): 100 / 100 / 100 / 100, LCP 0,5 s, CLS 0,018 (a troca de fonte no texto do topo).
+No desktop (Lighthouse modo desktop): 100 / 100 / 100 / 100, LCP 0,5 s, CLS 0,005. Valores do celular de duas medições seguidas.
 O INP só pode ser medido com visitantes reais; no laboratório não há tarefa longa durante interações (TBT 0 ms).
 
 O que pesa mais na v2 e por quê: as fotos reais nos cartões de categoria (antes eram cartões de texto) e o React da galeria, que só baixa quando a pessoa chega perto dela.
@@ -177,8 +177,8 @@ Iguais às da v1 (aparecem em amarelo na versão de revisão e na lista do rodap
 9. A arte de divulgação cita Nissan, que não está no adesivo: ele vende Nissan?
 10. Omoda e Jaecoo contam como uma marca só? (o adesivo mostra 15 logos)
 
-## 10. Melhorias técnicas que ficaram de fora
+## 10. Ajustes feitos depois da primeira entrega
 
-- Reduzir a fonte Archivo (88 KB) gerando um recorte só com os caracteres e larguras usados: cerca de 40 KB a menos.
-- Ajustar as métricas da fonte reserva para zerar o pequeno deslocamento na troca de fonte do desktop (CLS 0,018).
-- No celular, a assinatura animada precisa de uma tela com pelo menos ~640px úteis de altura; em telas mais baixas fica a versão parada (completa e legível).
+- Archivo reduzida de 90 KB para 50 KB, sem diferença visível (comparação pixel a pixel abaixo de 0,1%).
+- Fontes reserva com as medidas das fontes do site: o salto na troca de fonte do desktop caiu de 0,018 para 0,005.
+- Assinatura animada também em celulares baixos (como iPhones com as barras do Safari): o texto encolhe em dois degraus para os logos continuarem legíveis. Testada de 600 a 1024px de altura, sem sobreposição. Abaixo de ~560px (por exemplo, iPhone SE com as barras) fica a versão parada, completa e legível.

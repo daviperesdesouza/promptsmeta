@@ -17,7 +17,7 @@ fts-multimarcas/
 │   ├── lib/whatsapp.ts        ← as mensagens prontas de cada botão
 │   └── styles/global.css      ← cores, tipografia, espaçamentos e movimento
 ├── public/                    ← arquivos copiados como estão (vídeos, og-capa.jpg, favicon)
-├── tools/                     ← scripts: adicionar entregas e gerar a imagem de compartilhamento
+├── tools/                     ← scripts: adicionar entregas, imagem de compartilhamento e fonte reduzida
 ├── tests/qa.mjs               ← testes automáticos do site pronto
 └── docs/                      ← prints de QA e o relatório do redesign
 ```
@@ -99,4 +99,4 @@ Antes de publicar: `modoRevisao: false`, autorizações confirmadas e `dominio` 
 npm run build && npm run qa
 ```
 
-Abre o site pronto num Chromium e confere 67 pontos: os 20 links de WhatsApp e cada mensagem, a categoria escolhida entrando nas mensagens, filtros e contagens da galeria, tela cheia, vídeo, menu do celular, botão fixo, assinatura sem sobreposição em 4 tamanhos de tela, hodômetro parando nos números reais, versão sem JavaScript, "reduzir movimento", rolagem lateral em 5 larguras e acessibilidade (axe). Precisa do Chromium do Playwright: `npx playwright install chromium` (ou a variável `CHROMIUM_PATH`).
+Abre o site pronto num Chromium e confere 71 pontos: os 20 links de WhatsApp e cada mensagem, a categoria escolhida entrando nas mensagens, filtros e contagens da galeria, tela cheia, vídeo, menu do celular, botão fixo, assinatura sem sobreposição em 6 tamanhos de tela, hodômetro parando nos números reais, versão sem JavaScript, "reduzir movimento", rolagem lateral em 5 larguras e acessibilidade (axe). Precisa do Chromium do Playwright: `npx playwright install chromium` (ou a variável `CHROMIUM_PATH`).

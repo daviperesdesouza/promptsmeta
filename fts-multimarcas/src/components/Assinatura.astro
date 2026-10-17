@@ -88,13 +88,18 @@ const chips = await Promise.all(CONFIG.marcas.map(async marca => ({
 
   /* Estado vivo (com JS e movimento): o palco fica preso na tela enquanto a rolagem desenha as rotas. */
   :global(.cv--vivo) { height: 300svh; }
-  :global(.cv--vivo) .cv-palco { position: sticky; top: 0; height: 100svh; min-height: 560px; padding: 0; overflow: hidden; }
+  :global(.cv--vivo) .cv-palco { position: sticky; top: 0; height: 100svh; min-height: 520px; padding: 0; overflow: hidden; }
   :global(.cv--vivo) .cv-quadro { height: 100%; }
   :global(.cv--vivo) .cv-textos { position: absolute; z-index: 4; left: var(--gutter); right: var(--gutter); top: calc(var(--header-h) + clamp(14px, 3vh, 36px)); }
   :global(.cv--vivo) .cv-fase + .cv-fase { display: block; }
   :global(.cv--vivo) .cv-fase { transition: opacity .45s var(--e-saida) .12s, transform .55s var(--e-saida) .12s; }
   :global(.cv--vivo) .cv-fase:not(.ativa) { opacity: 0; transform: translateY(14px); pointer-events: none; transition-duration: .2s; transition-delay: 0s; }
   :global(.cv--compacto) .cv-p { display: none; }
+  /* Degrau mínimo (celular baixo): só o título, menor e mais perto do cabeçalho. */
+  :global(.cv--minimo) .cv-textos { top: calc(var(--header-h) + 10px); }
+  :global(.cv--minimo) .cv-fase .rotulo { display: none; }
+  :global(.cv--minimo) .cv-tit { font-size: 1.7rem; }
+  :global(.cv--vivo.cv--minimo) .chip { padding: 3px 8px; }
   :global(.cv--vivo) .cv-chips { margin: 0; display: block; }
   /* Os logos entram juntos quando o palco aparece; depois só as rotas mudam com a rolagem. */
   :global(.cv--vivo) .chip { position: absolute; left: var(--x); top: var(--y); z-index: 3; width: var(--cw); height: var(--ch); opacity: 0; transform: scale(.82); transition: opacity .45s var(--e-saida), transform .6s var(--e-mola); transition-delay: calc(var(--i) * 32ms); }

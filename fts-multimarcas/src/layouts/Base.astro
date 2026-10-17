@@ -1,9 +1,8 @@
 ---
-import '@fontsource-variable/archivo/wdth.css';
 import '@fontsource-variable/instrument-sans/wght.css';
 import 'lenis/dist/lenis.css';
 import '../styles/global.css';
-import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import archivoSite from '../assets/fonts/archivo-site.woff2?url';
 import { CONFIG, TEXTOS, revisao, pendencias } from '../lib/conteudo';
 
 const dominio = CONFIG.dominio.replace(/\/$/, '');
@@ -64,7 +63,7 @@ const jsonld = {
   <meta property="og:image:alt" content="Fabricio Teixeira, consultor de carros 0 km de 14 marcas em Aracruz-ES">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={archivoSite} as="font" type="font/woff2" crossorigin>
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
   <script is:inline>
     // Liga os estados iniciais de animação antes da primeira pintura (sem JS, tudo aparece normal).

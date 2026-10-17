@@ -4,6 +4,16 @@
    escuro nas seções de prova, verde só para ação e para a rota.
    O vermelho entra apenas pelas fotos reais (o laço nos carros entregues).
    ========================================================================= */
+/* Archivo reduzida ao que o site usa (pesos 600–800, larguras 86–125%, caracteres do português).
+   Gerada por tools/fonte-archivo.py a partir da Archivo variável. */
+@font-face { font-family: 'Archivo Variable'; font-style: normal; font-display: swap; font-weight: 600 800; font-stretch: 86% 125%; src: url('../assets/fonts/archivo-site.woff2') format('woff2-variations'), url('../assets/fonts/archivo-site.woff2') format('woff2'); }
+/* Fontes reserva com as medidas das fontes do site (calculadas com Capsize): enquanto a fonte
+   baixa, o texto já ocupa o mesmo espaço, e nada pula quando ela chega. */
+@font-face { font-family: 'Instrument Sans Fallback'; font-weight: 100 599; src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Roboto'), local('Roboto-Regular'); ascent-override: 94.42%; descent-override: 24.33%; line-gap-override: 0%; size-adjust: 102.74%; }
+@font-face { font-family: 'Instrument Sans Fallback'; font-weight: 600 900; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Roboto Bold'), local('Roboto-Bold'); ascent-override: 94.42%; descent-override: 24.33%; line-gap-override: 0%; size-adjust: 102.74%; }
+@font-face { font-family: 'Archivo Fallback'; font-weight: 100 599; src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Roboto'), local('Roboto-Regular'); ascent-override: 88.96%; descent-override: 21.28%; line-gap-override: 0%; size-adjust: 98.70%; }
+@font-face { font-family: 'Archivo Fallback'; font-weight: 600 900; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'), local('Roboto Bold'), local('Roboto-Bold'); ascent-override: 88.96%; descent-override: 21.28%; line-gap-override: 0%; size-adjust: 98.70%; }
+
 :root {
   /* Identidade fixa */
   --verde: #048437;          /* ação, rota */
@@ -29,8 +39,8 @@
   --pend-bg: #ffe58a;
 
   /* Tipografia */
-  --f-display: 'Archivo Variable', 'Archivo', 'Arial Narrow', system-ui, sans-serif;
-  --f-texto: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --f-display: 'Archivo Variable', 'Archivo Fallback', 'Arial Narrow', system-ui, sans-serif;
+  --f-texto: 'Instrument Sans Variable', 'Instrument Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --t-hero: clamp(2.55rem, 1.05rem + 5.35vw, 5.9rem);
   --t-h2: clamp(2.05rem, 1.2rem + 3.3vw, 4.25rem);
   --t-h3: clamp(1.28rem, 1.05rem + .9vw, 1.75rem);

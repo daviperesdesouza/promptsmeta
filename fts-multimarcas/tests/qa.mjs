@@ -183,7 +183,7 @@ for (const [w, h] of [[360, 740], [390, 844], [768, 1024], [1280, 800], [1440, 9
   ok('Botão fixo some no rodapé', !(await fixo()));
   await ctx.close();
 }
-for (const [w, h] of [[390, 844], [768, 1024], [1280, 720], [1440, 900]]) {
+for (const [w, h] of [[390, 844], [390, 664], [360, 600], [768, 1024], [1280, 720], [1440, 900]]) {
   const { ctx, p } = await abre(w, h);
   const cv = await p.evaluate(() => { const c = document.querySelector('[data-assinatura]'); return { top: c.getBoundingClientRect().top + scrollY, h: c.offsetHeight, vivo: c.classList.contains('cv--vivo') }; });
   await p.evaluate(y => scrollTo(0, y), cv.top + cv.h - h);
